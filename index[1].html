@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Семейная касса</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#16302B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Касса">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png" type="image/png">
+<style>
+  :root{
+    --bg-deep:#16302B;
+    --bg-panel:#1E3D36;
+    --bg-panel-2:#234943;
+    --paper:#F3ECDD;
+    --paper-shadow:#DDD3BC;
+    --ink:#1B2420;
+    --ink-soft:#5B6660;
+    --gold:#D4A73D;
+    --gold-soft:#e8cf8f;
+    --rust:#B3543F;
+    --cat-1:#7C9473; --cat-2:#5B7FA6; --cat-3:#B3543F; --cat-4:#D4A73D;
+    --cat-5:#8C5B7A; --cat-6:#6B7280; --cat-7:#4E8C82; --cat-8:#A65D8E;
+    --font-display:'Fraunces', serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg-deep);color:var(--paper);font-family:var(--font-body);min-height:100vh;
+    background-image:radial-gradient(circle at 20% 10%, rgba(212,167,61,0.05), transparent 40%),radial-gradient(circle at 80% 90%, rgba(212,167,61,0.04), transparent 40%);}
+  .app{max-width:1100px;margin:0 auto;padding:20px 18px 100px;}
+  .topbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px;}
+  .brand{display:flex;align-items:baseline;gap:10px;}
+  .brand h1{font-family:var(--font-display);font-weight:700;font-size:26px;margin:0;color:var(--gold-soft);letter-spacing:0.3px;}
+  .brand small{font-family:var(--font-mono);font-size:11px;color:rgba(243,236,221,0.5);}
+  .members-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .member-chip{display:flex;align-items:center;gap:6px;padding:5px 10px 5px 5px;border-radius:999px;background:var(--bg-panel);border:1px solid rgba(243,236,221,0.12);font-size:12.5px;cursor:pointer;color:rgba(243,236,221,0.85);transition:transform .12s ease, border-color .12s ease;}
+  .member-chip:hover{transform:translateY(-1px);}
+  .member-chip.active{border-color:var(--gold);color:var(--gold-soft);background:var(--bg-panel-2);}
+  .avatar{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10px;font-weight:600;color:#12201c;flex-shrink:0;}
+
+  .year-bar{display:flex;align-items:center;gap:14px;margin-bottom:10px;flex-wrap:wrap;}
+  .nav-arrow{background:var(--bg-panel);border:1px solid rgba(243,236,221,0.12);color:var(--paper);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:14px;flex-shrink:0;}
+  .nav-arrow:hover{border-color:var(--gold);}
+  .nav-row{display:grid;grid-template-columns:32px 110px 32px;column-gap:14px;align-items:center;}
+  .year-label{font-family:var(--font-display);font-size:22px;font-weight:600;color:var(--gold-soft);text-align:center;}
+  .year-total{font-family:var(--font-mono);font-size:15px;color:rgba(243,236,221,0.6);margin-left:6px;}
+  .year-total b{color:var(--gold-soft);font-weight:700;}
+
+  .month-bar{display:flex;align-items:center;margin-bottom:22px;}
+  .month-label{font-family:var(--font-body);font-size:15px;font-weight:600;color:rgba(243,236,221,0.9);text-align:center;text-transform:capitalize;}
+
+  .cal-pie-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;align-items:start;}
+  @media (max-width:760px){.cal-pie-layout{grid-template-columns:1fr;}}
+  .calendar-card, .pie-card{background:var(--bg-panel);border-radius:16px;padding:18px;border:1px solid rgba(243,236,221,0.08);}
+  .calendar-card h3, .pie-card h3{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(243,236,221,0.5);margin:0 0 14px;font-weight:600;}
+  .cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
+  .cal-weekdays span{font-size:11px;text-align:center;color:rgba(243,236,221,0.4);font-family:var(--font-mono);display:block;}
+  .cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+  .cal-day{aspect-ratio:1;border-radius:8px;background:rgba(243,236,221,0.04);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-size:12px;color:rgba(243,236,221,0.7);border:1px solid transparent;}
+  .cal-day:hover{border-color:var(--gold);}
+  .cal-day.empty{visibility:hidden;cursor:default;}
+  .cal-day.has-expense{background:rgba(212,167,61,0.16);}
+  .cal-day.selected{background:var(--gold);color:#16302B;font-weight:600;}
+  .cal-day.today:not(.selected){box-shadow:inset 0 0 0 1px var(--gold-soft);}
+  .cal-day .dot{width:4px;height:4px;border-radius:50%;background:var(--gold-soft);margin-top:2px;}
+  .cal-day.selected .dot{background:#16302B;}
+  .day-detail-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .back-to-month{font-size:12px;color:var(--gold-soft);cursor:pointer;background:none;border:none;font-family:var(--font-body);padding:0;text-decoration:underline;}
+  .pie-wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  .pie-total{font-family:var(--font-mono);font-weight:600;font-size:16px;color:var(--gold-soft);text-align:center;margin-top:8px;}
+  .pie-legend{flex:1;min-width:130px;}
+  .pie-legend-row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;padding:4px 0;color:rgba(243,236,221,0.85);gap:8px;}
+  .pie-legend-name{display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .pie-legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .pie-legend-amt{font-family:var(--font-mono);color:rgba(243,236,221,0.6);flex-shrink:0;}
+  .pie-empty{color:rgba(243,236,221,0.4);font-style:italic;font-size:13px;}
+
+  .tape{display:flex;flex-direction:column;gap:6px;}
+  .day-group{margin-bottom:6px;}
+  .day-label{font-family:var(--font-mono);font-size:12px;color:rgba(243,236,221,0.5);margin:14px 0 8px 4px;text-transform:uppercase;letter-spacing:0.05em;display:flex;justify-content:space-between;align-items:center;padding-right:4px;}
+  .day-total-amt{font-family:var(--font-mono);color:var(--gold-soft);font-weight:700;text-transform:none;letter-spacing:normal;font-size:12.5px;}
+  .receipt{background:var(--paper);color:var(--ink);border-radius:6px;padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;position:relative;box-shadow:0 2px 0 var(--paper-shadow), 0 6px 14px rgba(0,0,0,0.18);}
+  .receipt:hover{transform:scale(1.012);}
+  .receipt::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:6px 0 0 6px;background:var(--cat-color, var(--cat-6));}
+  .receipt-dot{width:9px;height:9px;border-radius:50%;background:var(--cat-color,var(--cat-6));flex-shrink:0;margin-left:4px;}
+  .receipt-main{flex:1;min-width:0;}
+  .receipt-cat{font-size:13.5px;font-weight:600;}
+  .receipt-note{font-size:12px;color:var(--ink-soft);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .receipt-member{font-family:var(--font-mono);font-size:11px;background:rgba(27,36,32,0.07);padding:3px 8px;border-radius:999px;color:var(--ink-soft);flex-shrink:0;}
+  .receipt-amount{font-family:var(--font-mono);font-weight:600;font-size:15px;flex-shrink:0;min-width:80px;text-align:right;}
+  .empty-tape{padding:40px 20px;text-align:center;color:rgba(243,236,221,0.4);font-style:italic;}
+  .fab{position:fixed;bottom:26px;right:26px;width:58px;height:58px;border-radius:50%;background:var(--gold);color:#16302B;border:none;font-size:28px;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;}
+  .fab:hover{transform:scale(1.06);}
+  .overlay{position:fixed;inset:0;background:rgba(10,18,15,0.6);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px;}
+  .modal{background:var(--paper);color:var(--ink);border-radius:14px;padding:26px;width:100%;max-width:420px;max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:0 20px 50px rgba(0,0,0,0.4);background-image:repeating-linear-gradient(to bottom, transparent, transparent 27px, rgba(27,36,32,0.05) 28px);}
+  .modal h2{font-family:var(--font-display);font-weight:600;font-size:20px;margin:0 0 16px;}
+  .modal label{display:block;font-size:12px;color:var(--ink-soft);margin:14px 0 6px;text-transform:uppercase;letter-spacing:0.05em;}
+  .amount-input{width:100%;font-family:var(--font-mono);font-size:32px;font-weight:600;border:none;border-bottom:2px solid rgba(27,36,32,0.2);background:transparent;padding:4px 0;color:var(--ink);outline:none;}
+  .amount-input:focus{border-color:var(--gold);}
+  .modal input[type=text], .modal input[type=date]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid rgba(27,36,32,0.18);font-family:var(--font-body);font-size:14px;background:#fff;color:var(--ink);}
+  .chip-grid{display:flex;flex-wrap:wrap;gap:7px;}
+  .chip{padding:6px 12px;border-radius:999px;font-size:12.5px;cursor:pointer;border:1.5px solid transparent;background:rgba(27,36,32,0.06);color:var(--ink);display:flex;align-items:center;gap:6px;}
+  .chip.selected{border-color:var(--ink);font-weight:600;}
+  .chip-dot{width:8px;height:8px;border-radius:50%;}
+  .add-cat-chip{background:transparent;border:1.5px dashed rgba(27,36,32,0.3);color:var(--ink-soft);}
+  .modal-actions{display:flex;gap:10px;margin-top:22px;position:sticky;bottom:-26px;background:var(--paper);padding:12px 0 4px;margin-bottom:-4px;}
+  .btn{flex:1;padding:11px;border-radius:9px;border:none;font-family:var(--font-body);font-weight:600;font-size:14px;cursor:pointer;}
+  .btn-primary{background:var(--ink);color:var(--paper);}
+  .btn-secondary{background:transparent;color:var(--ink-soft);border:1px solid rgba(27,36,32,0.2);}
+  .btn-danger{background:var(--rust);color:#fff;}
+  .modal-error{color:var(--rust);font-size:12.5px;margin-top:8px;min-height:16px;}
+  .onboard-name-input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(27,36,32,0.2);font-size:14px;margin-top:6px;}
+  .color-pick{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+  .color-swatch{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid transparent;}
+  .color-swatch.selected{border-color:var(--ink);}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:8px;font-size:13px;opacity:0;transition:opacity .25s ease;pointer-events:none;z-index:60;font-family:var(--font-body);}
+  .toast.show{opacity:1;}
+  .loading-note{color:rgba(243,236,221,0.4);font-size:13px;padding:30px;text-align:center;font-style:italic;}
+  .setup-box{max-width:560px;margin:60px auto;background:var(--bg-panel);padding:26px;border-radius:14px;line-height:1.6;}
+  .setup-box h2{font-family:var(--font-display);color:var(--gold-soft);}
+  .setup-box code{background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:12.5px;}
+
+  @keyframes shimmer-flow{0%{background-position:0px 0;}100%{background-position:160px 0;}}
+  .name-shimmer{background-size:160px 100%;background-repeat:repeat-x;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:shimmer-flow 4.5s linear infinite;font-weight:600;display:inline-block;}
+  .shimmer-gold{background-image:linear-gradient(100deg, #b8872a 0px, #fffbe8 40px, #b8872a 80px, #fffbe8 120px, #b8872a 160px);}
+  .shimmer-blue{background-image:linear-gradient(100deg, #43648a 0px, #f0f8ff 40px, #43648a 80px, #f0f8ff 120px, #43648a 160px);}
+  .shimmer-red{background-image:linear-gradient(100deg, #8f4030 0px, #ffede4 40px, #8f4030 80px, #ffede4 120px, #8f4030 160px);}
+  .shimmer-teal{background-image:linear-gradient(100deg, #3a6e66 0px, #e6fffa 40px, #3a6e66 80px, #e6fffa 120px, #3a6e66 160px);}
+  .shimmer-silver{background-image:linear-gradient(100deg, #7d868b 0px, #ffffff 40px, #7d868b 80px, #ffffff 120px, #7d868b 160px);}
+  .style-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;}
+  .style-dot.none{background:#fff;border:1.5px solid rgba(27,36,32,0.3);position:relative;}
+  .style-dot.none::after{content:"";position:absolute;left:2px;right:2px;top:50%;height:1.5px;background:rgba(27,36,32,0.4);transform:rotate(-40deg);}
+  .style-dot.gold{background:linear-gradient(135deg,#D4A73D,#fff3d0);}
+  .style-dot.blue{background:linear-gradient(135deg,#5B7FA6,#dbe9f7);}
+  .style-dot.red{background:linear-gradient(135deg,#B3543F,#ffd9cc);}
+  .style-dot.teal{background:linear-gradient(135deg,#4E8C82,#d5fff7);}
+  .style-dot.silver{background:linear-gradient(135deg,#9aa3a8,#ffffff);}
+  .edit-profile-btn{
+    display:flex;align-items:center;gap:6px;padding:5px 12px 5px 5px;border-radius:999px;
+    background:var(--bg-panel);border:1px dashed rgba(243,236,221,0.25);color:rgba(243,236,221,0.7);
+    font-size:12.5px;cursor:pointer;font-family:var(--font-body);
+  }
+  .edit-profile-btn:hover{border-color:var(--gold);color:var(--gold-soft);}
+  .avatar-photo{background-size:cover;background-position:center;}
+  .profile-avatar-preview{width:84px;height:84px;border-radius:50%;margin:0 auto 14px;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:28px;font-weight:600;color:#12201c;position:relative;}
+  .photo-upload-btn{display:block;text-align:center;font-size:12px;color:var(--ink-soft);text-decoration:underline;cursor:pointer;margin-bottom:6px;}
+  .animated-toggle-row{display:flex;align-items:center;gap:10px;margin-top:6px;}
+  .switch{position:relative;width:40px;height:22px;flex-shrink:0;}
+  .switch input{opacity:0;width:0;height:0;}
+  .switch-track{position:absolute;inset:0;background:rgba(27,36,32,0.2);border-radius:999px;cursor:pointer;transition:background .15s ease;}
+  .switch-track::before{content:"";position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .15s ease;}
+  .switch input:checked + .switch-track{background:var(--ink);}
+  .switch input:checked + .switch-track::before{transform:translateX(18px);}
+  .animated-preview-label{font-size:13px;color:var(--ink-soft);}
+  .page-tabs{display:flex;background:var(--bg-panel);border-radius:10px;padding:3px;border:1px solid rgba(243,236,221,0.1);margin-left:auto;margin-right:12px;}
+  .page-tabs button{border:none;background:transparent;color:rgba(243,236,221,0.6);font-family:var(--font-body);font-size:13px;font-weight:600;padding:7px 14px;border-radius:8px;cursor:pointer;}
+  .page-tabs button.active{background:var(--gold);color:#16302B;}
+
+  .analytics-section{background:var(--bg-panel);border-radius:16px;padding:18px;margin-bottom:16px;border:1px solid rgba(243,236,221,0.08);}
+  .analytics-section h3{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(243,236,221,0.5);margin:0 0 14px;font-weight:600;}
+
+  .period-toggle{display:flex;background:var(--bg-panel-2);border-radius:10px;padding:3px;width:fit-content;margin-bottom:16px;}
+  .period-toggle button{border:none;background:transparent;color:rgba(243,236,221,0.6);padding:7px 18px;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;font-family:var(--font-body);}
+  .period-toggle button.active{background:var(--gold);color:#16302B;}
+
+  .compare-card h4{font-size:12px;color:rgba(243,236,221,0.5);margin:0 0 14px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;}
+  .compare-metric{margin-bottom:14px;}
+  .compare-metric:last-child{margin-bottom:0;}
+  .compare-metric-label{font-size:11.5px;color:rgba(243,236,221,0.5);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.04em;}
+  .compare-metric-value{font-family:var(--font-mono);font-size:19px;font-weight:700;color:var(--paper);}
+  .compare-metric-sub{font-size:12px;font-family:var(--font-mono);margin-top:3px;color:rgba(243,236,221,0.45);}
+  .change-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:11.5px;padding:1px 8px;border-radius:999px;margin-left:6px;}
+  .change-up{background:rgba(179,84,63,0.18);color:#e08a72;}
+  .change-down{background:rgba(124,148,115,0.2);color:#9fc492;}
+  .change-flat{background:rgba(243,236,221,0.08);color:rgba(243,236,221,0.5);}
+
+  .trend-chart{display:flex;align-items:flex-end;gap:6px;height:110px;}
+  .trend-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:4px;}
+  .trend-bar{width:70%;background:rgba(212,167,61,0.35);border-radius:3px 3px 0 0;min-height:2px;transition:background .15s ease;}
+  .trend-bar-col.current .trend-bar{width:100%;background:var(--gold);}
+  .trend-bar-label{font-size:9.5px;color:rgba(243,236,221,0.4);margin-top:6px;font-family:var(--font-mono);text-align:center;}
+
+  .cat-change-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px dashed rgba(243,236,221,0.1);font-size:13px;gap:10px;}
+  .cat-change-row:last-child{border-bottom:none;}
+  .cat-change-name{color:rgba(243,236,221,0.85);min-width:0;}
+  .cat-change-nums{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:12.5px;color:rgba(243,236,221,0.6);flex-shrink:0;}
+
+  .weekday-chart{display:flex;align-items:flex-end;gap:8px;height:110px;}
+  .weekday-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
+  .weekday-bar{width:100%;background:var(--gold);border-radius:4px 4px 0 0;min-height:2px;opacity:0.55;transition:opacity .15s ease;}
+  .weekday-bar-col.peak .weekday-bar{opacity:1;}
+  .weekday-bar-label{font-size:10.5px;color:rgba(243,236,221,0.5);margin-top:6px;font-family:var(--font-mono);text-transform:uppercase;}
+  .weekday-bar-amt{font-size:9px;color:rgba(243,236,221,0.35);margin-top:2px;font-family:var(--font-mono);}
+</style>
+</head>
+<body>
+<div class="app" id="app"><div class="loading-note">Открываем кассу…</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   НАСТРОЙКА: данные вашего проекта Supabase
+   ============================================================ */
+const SUPABASE_URL = "https://cjitxdvgmilxmdwdygha.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_TxZVFBwDoSa6DsmufFkCeg_fSXqMZrZ";
+/* ============================================================ */
+
+let sb = null;
+if(SUPABASE_URL.startsWith('http') && SUPABASE_ANON_KEY.length > 10){
+  sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+const CAT_COLORS = ['var(--cat-1)','var(--cat-2)','var(--cat-3)','var(--cat-4)','var(--cat-5)','var(--cat-6)','var(--cat-7)','var(--cat-8)'];
+const MEMBER_COLORS = ['#7C9473','#5B7FA6','#D4A73D','#8C5B7A','#4E8C82','#A65D8E','#B3543F','#6B7280'];
+const CAT_COLOR_MAP = {'var(--cat-1)':'#7C9473','var(--cat-2)':'#5B7FA6','var(--cat-3)':'#B3543F','var(--cat-4)':'#D4A73D','var(--cat-5)':'#8C5B7A','var(--cat-6)':'#6B7280','var(--cat-7)':'#4E8C82','var(--cat-8)':'#A65D8E'};
+const WEEKDAYS = ['вс','пн','вт','ср','чт','пт','сб'];
+const WEEKDAYS_SHORT = ['пн','вт','ср','чт','пт','сб','вс'];
+const MONTHS = ['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
+const MONTHS_GENITIVE = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const MONTHS_SHORT = ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
+
+const today0 = new Date();
+let state = {
+  members: [], categories: [], myMemberId: null, filterMemberId: 'all',
+  selectedYear: today0.getFullYear(),
+  selectedMonth: today0.getMonth(),
+  selectedDay: null,
+  monthExpenses: [],
+  yearTotal: 0,
+  currentPage: 'home',
+  comparePeriod: 'week',
+  analytics: null,
+};
+
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function fmtMoney(n){ const sign = n<0 ? '−' : ''; return sign + Math.abs(Math.round(n)).toLocaleString('ru-RU') + ' ₽'; }
+function toast(msg){ const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 1800); }
+function pad(n){ return n<10 ? '0'+n : ''+n; }
+function toDateStr(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function escapeHtml(s){ const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+async function loadMembers(){
+  const {data, error} = await sb.from('members').select('*');
+  if(error){ toast('Ошибка загрузки участников'); return; }
+  state.members = data || [];
+}
+async function addMemberRow(m){
+  const {error} = await sb.from('members').insert(m);
+  if(error) toast('Не удалось сохранить участника');
+}
+async function updateMemberRow(id, patch){
+  const {error} = await sb.from('members').update(patch).eq('id', id);
+  if(error){ toast('Не удалось сохранить профиль'); return false; }
+  return true;
+}
+function avatarHtml(member, size, fontPx){
+  size = size || 20; fontPx = fontPx || 10;
+  if(member.photo){
+    return `<span class="avatar avatar-photo" style="width:${size}px;height:${size}px;background-image:url('${member.photo}');"></span>`;
+  }
+  const initial = member.name ? member.name[0].toUpperCase() : '?';
+  return `<span class="avatar" style="width:${size}px;height:${size}px;font-size:${fontPx}px;background:${member.color};">${initial}</span>`;
+}
+function memberNameHtml(member){
+  if(!member) return '—';
+  if(member.animated_style){
+    return `<span class="name-shimmer shimmer-${member.animated_style}">${escapeHtml(member.name)}</span>`;
+  }
+  return escapeHtml(member.name);
+}
+function resizeImageToDataUrl(file, maxSize){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onerror = ()=> reject(new Error('read failed'));
+    reader.onload = ()=>{
+      const img = new Image();
+      img.onerror = ()=> reject(new Error('image failed'));
+      img.onload = ()=>{
+        const canvas = document.createElement('canvas');
+        canvas.width = maxSize; canvas.height = maxSize;
+        const ctx = canvas.getContext('2d');
+        const side = Math.min(img.width, img.height);
+        const sx = (img.width-side)/2, sy = (img.height-side)/2;
+        ctx.drawImage(img, sx, sy, side, side, 0, 0, maxSize, maxSize);
+        resolve(canvas.toDataURL('image/jpeg', 0.82));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+async function loadCategories(){
+  const {data, error} = await sb.from('categories').select('*');
+  if(error){ toast('Ошибка загрузки категорий'); return; }
+  state.categories = data || [];
+}
+async function addCategoryRow(c){
+  const {error} = await sb.from('categories').insert(c);
+  if(error) toast('Не удалось сохранить категорию');
+}
+async function insertExpense(exp){
+  const {error} = await sb.from('expenses').insert({
+    id: exp.id, amount: exp.amount, category_id: exp.categoryId,
+    member_id: exp.memberId, note: exp.note, date: exp.date, created_at: exp.createdAt
+  });
+  if(error){ toast('Не удалось сохранить трату'); return false; }
+  return true;
+}
+async function deleteExpenseRow(id){
+  const {error} = await sb.from('expenses').delete().eq('id', id);
+  if(error) toast('Не удалось удалить трату');
+}
+async function updateExpenseRow(id, patch){
+  const {error} = await sb.from('expenses').update({
+    amount: patch.amount, category_id: patch.categoryId, member_id: patch.memberId,
+    note: patch.note, date: patch.date
+  }).eq('id', id);
+  if(error){ toast('Не удалось сохранить изменения'); return false; }
+  return true;
+}
+async function fetchExpensesRange(startStr, endStr, memberId){
+  let q = sb.from('expenses').select('*').gte('date', startStr).lte('date', endStr);
+  if(memberId && memberId !== 'all') q = q.eq('member_id', memberId);
+  const {data, error} = await q;
+  if(error){ toast('Ошибка загрузки трат'); return []; }
+  return (data||[]).map(r=>({id:r.id, amount:Number(r.amount), categoryId:r.category_id, memberId:r.member_id, note:r.note, date: r.date, createdAt: Number(r.created_at)}));
+}
+
+function loadMyMemberId(){ state.myMemberId = localStorage.getItem('family-cash-member-id'); }
+function saveMyMemberId(id){ state.myMemberId = id; localStorage.setItem('family-cash-member-id', id); }
+
+function categoryById(id){ return state.categories.find(c=>c.id===id) || {name:'Другое', color:'var(--cat-7)'}; }
+function memberById(id){ return state.members.find(m=>m.id===id); }
+function resolveColor(c){
+  if(c && typeof c === 'string' && c.startsWith('var(')) return CAT_COLOR_MAP[c] || '#6B7280';
+  return c;
+}
+function pickCategoryColor(){
+  const used = new Set(state.categories.map(c=>resolveColor(c.color)));
+  for(const c of CAT_COLORS){
+    if(!used.has(resolveColor(c))) return c;
+  }
+  // все базовые цвета заняты — генерируем следующий по кругу оттенков, не повторяя уже использованные
+  let hue = (state.categories.length * 47) % 360;
+  let hslColor = `hsl(${hue}, 55%, 55%)`;
+  let guard = 0;
+  while(used.has(hslColor) && guard < 20){
+    hue = (hue + 47) % 360;
+    hslColor = `hsl(${hue}, 55%, 55%)`;
+    guard++;
+  }
+  return hslColor;
+}
+
+function monthRange(year, month){
+  return {start: new Date(year, month, 1), end: new Date(year, month+1, 0)};
+}
+function yearRange(year){
+  return {start: new Date(year, 0, 1), end: new Date(year, 11, 31)};
+}
+function startOfWeekDate(d){
+  const day = d.getDay();
+  const diff = (day===0 ? -6 : 1-day);
+  const r = new Date(d); r.setDate(d.getDate()+diff); r.setHours(0,0,0,0);
+  return r;
+}
+function currentWeekRange(offset){
+  offset = offset || 0;
+  const base = new Date(); base.setDate(base.getDate() + offset*7);
+  const start = startOfWeekDate(base);
+  const end = new Date(start); end.setDate(start.getDate()+6);
+  return {start, end};
+}
+function currentMonthRangeReal(offset){
+  offset = offset || 0;
+  const t = new Date();
+  let y = t.getFullYear(), m = t.getMonth()+offset;
+  while(m<0){ m+=12; y-=1; } while(m>11){ m-=12; y+=1; }
+  return monthRange(y, m);
+}
+function sumByCategoryMap(expenses){
+  const map = {};
+  expenses.forEach(e=>{ map[e.categoryId] = (map[e.categoryId]||0) + e.amount; });
+  return map;
+}
+function topCategoryOf(expenses){
+  const map = sumByCategoryMap(expenses);
+  let best = null;
+  Object.entries(map).forEach(([id, amt])=>{ if(!best || amt>best.amt) best = {id, amt}; });
+  return best;
+}
+function periodStats(expenses, dayCount){
+  const total = expenses.reduce((s,e)=>s+e.amount,0);
+  return { total, avgPerDay: dayCount>0 ? total/dayCount : 0, topCategory: topCategoryOf(expenses) };
+}
+function changeInfo(current, previous){
+  const diff = current - previous;
+  let pct = null;
+  if(previous !== 0) pct = (diff/previous)*100;
+  else if(current !== 0) pct = 100;
+  let cls = 'change-flat', sign = '';
+  if(diff > 0.5){ cls = 'change-up'; sign = '+'; }
+  else if(diff < -0.5){ cls = 'change-down'; }
+  return {diff, pct, cls, sign};
+}
+
+// ---------- RENDER ----------
+
+function renderApp(){
+  const app = document.getElementById('app');
+  if(!sb){
+    app.innerHTML = `<div class="setup-box">
+      <h2>Нужна настройка</h2>
+      <p>В файл ещё не вставлены данные Supabase. Заполните <code>SUPABASE_URL</code> и <code>SUPABASE_ANON_KEY</code> в начале скрипта.</p>
+    </div>`;
+    return;
+  }
+  if(!state.myMemberId){ app.innerHTML = renderOnboarding(); attachOnboardingEvents(); return; }
+  if(state.currentPage === 'analytics'){
+    app.innerHTML = renderAnalyticsShell();
+    attachTopbarEvents();
+    attachAnalyticsEvents();
+    loadAnalyticsData();
+    return;
+  }
+  app.innerHTML = renderMain(); attachMainEvents(); refreshData();
+}
+
+function renderOnboarding(){
+  return `
+  <div style="max-width:420px;margin:60px auto;text-align:center;">
+    <h1 style="font-family:var(--font-display);color:var(--gold-soft);font-size:28px;">Семейная касса</h1>
+    <p style="color:rgba(243,236,221,0.65);font-size:14px;">Кто вы? Выберите себя из списка или добавьте нового участника семьи.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:20px 0;">
+      ${state.members.map(m=>`<div class="member-chip" style="padding:8px 16px;font-size:14px;" data-select-member="${m.id}">${avatarHtml(m,24,11)}${memberNameHtml(m)}</div>`).join('')}
+    </div>
+    <div style="background:var(--bg-panel);border-radius:14px;padding:18px;text-align:left;">
+      <label style="font-size:12px;color:rgba(243,236,221,0.55);text-transform:uppercase;">Новый участник</label>
+      <input class="onboard-name-input" id="new-member-name" type="text" placeholder="Например, Аня" style="background:#fff;">
+      <div class="color-pick" id="new-member-colors">
+        ${MEMBER_COLORS.map((c,i)=>`<div class="color-swatch ${i===0?'selected':''}" data-color="${c}" style="background:${c};"></div>`).join('')}
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:14px;" id="add-member-btn">Добавить и войти</button>
+    </div>
+  </div>`;
+}
+function attachOnboardingEvents(){
+  document.querySelectorAll('[data-select-member]').forEach(el=>{
+    el.addEventListener('click', ()=>{ saveMyMemberId(el.getAttribute('data-select-member')); renderApp(); });
+  });
+  let chosenColor = MEMBER_COLORS[0];
+  document.querySelectorAll('#new-member-colors .color-swatch').forEach(sw=>{
+    sw.addEventListener('click', ()=>{
+      document.querySelectorAll('#new-member-colors .color-swatch').forEach(s=>s.classList.remove('selected'));
+      sw.classList.add('selected'); chosenColor = sw.getAttribute('data-color');
+    });
+  });
+  document.getElementById('add-member-btn').addEventListener('click', async ()=>{
+    const nameInput = document.getElementById('new-member-name');
+    const name = nameInput.value.trim();
+    if(!name){ nameInput.focus(); return; }
+    const newMember = {id: uid(), name, color: chosenColor};
+    await addMemberRow(newMember);
+    state.members.push(newMember);
+    saveMyMemberId(newMember.id);
+    renderApp();
+  });
+}
+
+function renderTopbar(){
+  return `
+    <div class="topbar">
+      <div class="brand"><h1>Семейная касса</h1></div>
+      <div class="page-tabs" id="page-tabs">
+        <button data-page="home" class="${state.currentPage==='home'?'active':''}">Касса</button>
+        <button data-page="analytics" class="${state.currentPage==='analytics'?'active':''}">Аналитика</button>
+      </div>
+      <div class="members-row" id="members-row">
+        ${renderMemberChip('all', 'Все')}
+        ${state.members.map(m=>renderMemberChip(m.id, m.name, m)).join('')}
+        <button class="edit-profile-btn" id="edit-profile-btn">✎ Профиль</button>
+      </div>
+    </div>
+  `;
+}
+function attachTopbarEvents(){
+  document.querySelectorAll('[data-page]').forEach(el=>{
+    el.addEventListener('click', ()=>{ state.currentPage = el.getAttribute('data-page'); renderApp(); });
+  });
+  document.querySelectorAll('[data-filter-member]').forEach(el=>{
+    el.addEventListener('click', ()=>{ state.filterMemberId = el.getAttribute('data-filter-member'); renderApp(); });
+  });
+  const btn = document.getElementById('edit-profile-btn');
+  if(btn) btn.addEventListener('click', openEditProfile);
+}
+
+function renderMain(){
+  return `
+    ${renderTopbar()}
+
+    <div class="year-bar">
+      <div class="nav-row">
+        <button class="nav-arrow" id="prev-year">‹</button>
+        <span class="year-label" id="year-label">${state.selectedYear}</span>
+        <button class="nav-arrow" id="next-year">›</button>
+      </div>
+      <span class="year-total" id="year-total"><b>…</b></span>
+    </div>
+
+    <div class="month-bar">
+      <div class="nav-row">
+        <button class="nav-arrow" id="prev-month">‹</button>
+        <span class="month-label" id="month-label">${MONTHS[state.selectedMonth]}</span>
+        <button class="nav-arrow" id="next-month">›</button>
+      </div>
+    </div>
+
+    <div class="cal-pie-layout">
+      <div class="calendar-card" id="calendar-card"><div class="loading-note">Загружаем календарь…</div></div>
+      <div class="pie-card" id="pie-card"><div class="loading-note">Считаем…</div></div>
+    </div>
+
+    <div id="tape-section">
+      <div class="tape" id="tape"><div class="loading-note">Загружаем траты…</div></div>
+    </div>
+
+    <button class="fab" id="fab-add" title="Добавить трату">+</button>
+  `;
+}
+function renderMemberChip(id, name, member){
+  const active = state.filterMemberId===id ? 'active' : '';
+  const dot = member ? avatarHtml(member) : '';
+  const label = member ? memberNameHtml(member) : name;
+  return `<div class="member-chip ${active}" data-filter-member="${id}">${dot}${label}</div>`;
+}
+
+async function refreshData(){
+  const range = monthRange(state.selectedYear, state.selectedMonth);
+  const yRange = yearRange(state.selectedYear);
+  const [monthData, yearData] = await Promise.all([
+    fetchExpensesRange(toDateStr(range.start), toDateStr(range.end), state.filterMemberId),
+    fetchExpensesRange(toDateStr(yRange.start), toDateStr(yRange.end), state.filterMemberId)
+  ]);
+  state.monthExpenses = monthData;
+  state.yearTotal = yearData.reduce((s,e)=>s+e.amount,0);
+  const yt = document.getElementById('year-total');
+  if(yt) yt.innerHTML = `<b>${fmtMoney(state.yearTotal)}</b>`;
+  renderCalendar();
+  renderPieAndTape();
+}
+
+function renderCalendar(){
+  const el = document.getElementById('calendar-card');
+  if(!el) return;
+  const {selectedYear:y, selectedMonth:m} = state;
+  const firstDay = new Date(y, m, 1);
+  const daysInMonth = new Date(y, m+1, 0).getDate();
+  let startOffset = firstDay.getDay() - 1; // Monday = 0
+  if(startOffset < 0) startOffset = 6;
+
+  const byDay = {};
+  state.monthExpenses.forEach(e=>{ (byDay[e.date] = byDay[e.date] || []).push(e); });
+  const todayStr = toDateStr(new Date());
+
+  let cells = '';
+  for(let i=0;i<startOffset;i++) cells += `<div class="cal-day empty"></div>`;
+  for(let d=1; d<=daysInMonth; d++){
+    const dateStr = y+'-'+pad(m+1)+'-'+pad(d);
+    const hasExp = !!byDay[dateStr];
+    const isSelected = state.selectedDay === dateStr;
+    const isToday = dateStr === todayStr;
+    cells += `<div class="cal-day ${hasExp?'has-expense':''} ${isSelected?'selected':''} ${isToday?'today':''}" data-day="${dateStr}">
+      <span>${d}</span>${hasExp ? '<span class="dot"></span>' : ''}
+    </div>`;
+  }
+  el.innerHTML = `
+    <h3>${state.selectedDay ? 'Выбранный день' : 'Календарь месяца'}</h3>
+    <div class="cal-weekdays">${WEEKDAYS_SHORT.map(w=>`<span>${w}</span>`).join('')}</div>
+    <div class="cal-days">${cells}</div>
+  `;
+  el.querySelectorAll('.cal-day[data-day]').forEach(cell=>{
+    cell.addEventListener('click', ()=>{
+      const day = cell.getAttribute('data-day');
+      state.selectedDay = state.selectedDay === day ? null : day;
+      renderCalendar();
+      renderPieAndTape();
+    });
+  });
+}
+
+function currentScopeExpenses(){
+  if(state.selectedDay) return state.monthExpenses.filter(e=>e.date===state.selectedDay);
+  return state.monthExpenses;
+}
+
+function renderPieAndTape(){
+  const expenses = currentScopeExpenses();
+  renderPie(expenses);
+  renderTape(expenses);
+}
+
+function renderPie(expenses){
+  const el = document.getElementById('pie-card');
+  if(!el) return;
+  const total = expenses.reduce((s,e)=>s+e.amount,0);
+  const byCat = {};
+  expenses.forEach(e=>{ byCat[e.categoryId] = (byCat[e.categoryId]||0) + e.amount; });
+  const rows = Object.entries(byCat).sort((a,b)=>b[1]-a[1]);
+
+  const heading = state.selectedDay ? 'Категории за день' : 'Категории за месяц';
+
+  if(rows.length===0){
+    el.innerHTML = `<h3>${heading}</h3><div class="pie-empty">Нет данных для диаграммы.</div>`;
+    return;
+  }
+
+  const r = 60, C = 2*Math.PI*r, cx=80, cy=80;
+  let offset = 0;
+  const circles = rows.map(([catId, amt])=>{
+    const cat = categoryById(catId);
+    const color = resolveColor(cat.color) || '#6B7280';
+    const frac = amt/total;
+    const dash = frac*C;
+    const circle = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="24" stroke-dasharray="${dash} ${C-dash}" stroke-dashoffset="${-offset}" />`;
+    offset += dash;
+    return circle;
+  }).join('');
+
+  el.innerHTML = `
+    <h3>${heading}</h3>
+    <div class="pie-wrap">
+      <div>
+        <svg width="160" height="160" viewBox="0 0 160 160" style="transform:rotate(-90deg);">${circles}</svg>
+        <div class="pie-total">${fmtMoney(total)}</div>
+      </div>
+      <div class="pie-legend">
+        ${rows.map(([catId, amt])=>{
+          const cat = categoryById(catId);
+          const pct = Math.round(amt/total*100);
+          return `<div class="pie-legend-row">
+            <span class="pie-legend-name"><span class="pie-legend-dot" style="background:${resolveColor(cat.color)||'#6B7280'};"></span>${cat.name} · ${pct}%</span>
+            <span class="pie-legend-amt">${fmtMoney(amt)}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderTape(expenses){
+  const el = document.getElementById('tape');
+  if(!el) return;
+
+  const dayTotal = state.selectedDay ? expenses.reduce((s,e)=>s+e.amount,0) : 0;
+  const header = state.selectedDay ? `
+    <div class="day-detail-header">
+      <div style="display:flex;align-items:baseline;gap:10px;">
+        <div class="day-label" style="margin:0;">${formatDateLong(state.selectedDay)}</div>
+        <span class="day-total-amt">${fmtMoney(dayTotal)}</span>
+      </div>
+      <button class="back-to-month" id="back-to-month">← Показать весь месяц</button>
+    </div>` : '';
+
+  if(expenses.length===0){
+    el.innerHTML = header + '<div class="empty-tape">Трат здесь ещё нет.<br>Нажмите «+», чтобы записать первую.</div>';
+    attachBackButton();
+    return;
+  }
+
+  if(state.selectedDay){
+    const items = expenses.slice().sort((a,b)=>b.createdAt-a.createdAt);
+    el.innerHTML = header + renderReceiptList(items);
+  } else {
+    const byDay = {};
+    expenses.forEach(e=>{ (byDay[e.date] = byDay[e.date]||[]).push(e); });
+    const days = Object.keys(byDay).sort().reverse();
+    el.innerHTML = header + days.map(date=>{
+      const items = byDay[date].sort((a,b)=>b.createdAt-a.createdAt);
+      const groupTotal = items.reduce((s,e)=>s+e.amount,0);
+      return `<div class="day-group"><div class="day-label"><span>${formatDateLong(date)}</span><span class="day-total-amt">${fmtMoney(groupTotal)}</span></div>${renderReceiptList(items)}</div>`;
+    }).join('');
+  }
+
+  el.querySelectorAll('.receipt').forEach(r=>{
+    r.addEventListener('click', ()=>{
+      const id = r.getAttribute('data-expense-id');
+      const exp = state.monthExpenses.find(e=>e.id===id);
+      if(exp) openEditExpense(exp);
+    });
+  });
+  attachBackButton();
+}
+
+function attachBackButton(){
+  const btn = document.getElementById('back-to-month');
+  if(btn) btn.addEventListener('click', ()=>{ state.selectedDay = null; renderCalendar(); renderPieAndTape(); });
+}
+
+function renderReceiptList(items){
+  return items.map(e=>{
+    const cat = categoryById(e.categoryId);
+    const m = memberById(e.memberId);
+    return `<div class="receipt" style="--cat-color:${cat.color};" data-expense-id="${e.id}">
+      <span class="receipt-dot"></span>
+      <div class="receipt-main"><div class="receipt-cat">${cat.name}</div>${e.note ? `<div class="receipt-note">${escapeHtml(e.note)}</div>` : ''}</div>
+      <span class="receipt-member">${m ? memberNameHtml(m) : '—'}</span>
+      <span class="receipt-amount">${fmtMoney(e.amount)}</span>
+    </div>`;
+  }).join('');
+}
+
+function formatDateLong(dateStr){
+  const d = new Date(dateStr+'T00:00:00');
+  return d.getDate()+' '+MONTHS_GENITIVE[d.getMonth()]+', '+WEEKDAYS[d.getDay()];
+}
+
+function attachMainEvents(){
+  attachTopbarEvents();
+  document.getElementById('prev-year').addEventListener('click', ()=>{ state.selectedYear -= 1; state.selectedDay = null; renderApp(); });
+  document.getElementById('next-year').addEventListener('click', ()=>{ state.selectedYear += 1; state.selectedDay = null; renderApp(); });
+  document.getElementById('prev-month').addEventListener('click', ()=>{
+    state.selectedMonth -= 1;
+    if(state.selectedMonth < 0){ state.selectedMonth = 11; state.selectedYear -= 1; }
+    state.selectedDay = null; renderApp();
+  });
+  document.getElementById('next-month').addEventListener('click', ()=>{
+    state.selectedMonth += 1;
+    if(state.selectedMonth > 11){ state.selectedMonth = 0; state.selectedYear += 1; }
+    state.selectedDay = null; renderApp();
+  });
+  document.getElementById('fab-add').addEventListener('click', openAddExpense);
+}
+
+function openAddExpense(){
+  let selectedCategory = state.categories[0] ? state.categories[0].id : null;
+  const overlay = document.createElement('div'); overlay.className = 'overlay';
+  overlay.innerHTML = `
+    <div class="modal">
+      <h2>Новая трата</h2>
+      <label>Сумма</label>
+      <input class="amount-input" id="exp-amount" type="number" inputmode="decimal" placeholder="0" min="0" step="0.01">
+      <label>Категория</label>
+      <div class="chip-grid" id="cat-chips">
+        ${state.categories.map(c=>`<div class="chip ${c.id===selectedCategory?'selected':''}" data-cat="${c.id}"><span class="chip-dot" style="background:${resolveColor(c.color)};"></span>${c.name}</div>`).join('')}
+        <div class="chip add-cat-chip" id="add-cat-chip">+ своя категория</div>
+      </div>
+      <label>Кто платил</label>
+      <div class="chip-grid" id="member-chips">
+        ${state.members.map(m=>`<div class="chip ${m.id===state.myMemberId?'selected':''}" data-mem="${m.id}">${avatarHtml(m,16,8)}${escapeHtml(m.name)}</div>`).join('')}
+      </div>
+      <label>Дата</label>
+      <input type="date" id="exp-date" value="${state.selectedDay || toDateStr(new Date())}">
+      <label>Заметка (необязательно)</label>
+      <input type="text" id="exp-note" placeholder="Например, ужин в кафе">
+      <div class="modal-error" id="exp-error"></div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="exp-cancel">Отмена</button>
+        <button class="btn btn-primary" id="exp-save">Записать</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  let selectedMember = state.myMemberId;
+
+  function rebindCatChips(){
+    overlay.querySelectorAll('#cat-chips .chip[data-cat]').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        overlay.querySelectorAll('#cat-chips .chip').forEach(c=>c.classList.remove('selected'));
+        chip.classList.add('selected'); selectedCategory = chip.getAttribute('data-cat');
+      });
+    });
+  }
+  rebindCatChips();
+  overlay.querySelectorAll('#member-chips .chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      overlay.querySelectorAll('#member-chips .chip').forEach(c=>c.classList.remove('selected'));
+      chip.classList.add('selected'); selectedMember = chip.getAttribute('data-mem');
+    });
+  });
+  overlay.querySelector('#add-cat-chip').addEventListener('click', async ()=>{
+    const name = prompt('Название новой категории:');
+    if(!name || !name.trim()) return;
+    const color = pickCategoryColor();
+    const newCat = {id: uid(), name: name.trim(), color};
+    await addCategoryRow(newCat);
+    state.categories.push(newCat);
+    selectedCategory = newCat.id;
+    overlay.querySelector('#cat-chips').innerHTML =
+      state.categories.map(c=>`<div class="chip ${c.id===selectedCategory?'selected':''}" data-cat="${c.id}"><span class="chip-dot" style="background:${resolveColor(c.color)};"></span>${c.name}</div>`).join('')
+      + '<div class="chip add-cat-chip" id="add-cat-chip">+ своя категория</div>';
+    rebindCatChips();
+    overlay.querySelector('#add-cat-chip').replaceWith(overlay.querySelector('#add-cat-chip').cloneNode(true));
+  });
+  overlay.querySelector('#exp-cancel').addEventListener('click', ()=> overlay.remove());
+  overlay.addEventListener('click', (e)=>{ if(e.target===overlay) overlay.remove(); });
+  overlay.querySelector('#exp-save').addEventListener('click', async ()=>{
+    const amountVal = parseFloat(overlay.querySelector('#exp-amount').value);
+    const dateVal = overlay.querySelector('#exp-date').value;
+    const noteVal = overlay.querySelector('#exp-note').value.trim();
+    const errEl = overlay.querySelector('#exp-error');
+    if(!amountVal || amountVal<=0){ errEl.textContent = 'Укажите сумму больше нуля.'; return; }
+    if(!selectedMember){ errEl.textContent = 'Выберите, кто платил.'; return; }
+    if(!dateVal){ errEl.textContent = 'Укажите дату.'; return; }
+    const exp = {id: uid(), amount: amountVal, categoryId: selectedCategory, memberId: selectedMember, note: noteVal, date: dateVal, createdAt: Date.now()};
+    const ok = await insertExpense(exp);
+    if(!ok) return;
+    overlay.remove(); toast('Трата записана');
+    const expDate = new Date(dateVal+'T00:00:00');
+    if(expDate.getFullYear() !== state.selectedYear || expDate.getMonth() !== state.selectedMonth){
+      state.selectedYear = expDate.getFullYear();
+      state.selectedMonth = expDate.getMonth();
+      state.selectedDay = dateVal;
+      renderApp();
+    } else {
+      refreshData();
+    }
+  });
+  setTimeout(()=> overlay.querySelector('#exp-amount').focus(), 50);
+}
+
+function openEditProfile(){
+  const me = memberById(state.myMemberId);
+  if(!me) return;
+  let pendingPhoto = me.photo || null;
+  let selectedColor = me.color;
+  let animatedStyle = me.animated_style || null;
+
+  const overlay = document.createElement('div'); overlay.className = 'overlay';
+  overlay.innerHTML = `
+    <div class="modal">
+      <h2>Мой профиль</h2>
+      <div class="profile-avatar-preview" id="profile-preview" style="${pendingPhoto ? `background-image:url('${pendingPhoto}');` : `background:${selectedColor};`}">
+        ${pendingPhoto ? '' : (me.name ? me.name[0].toUpperCase() : '?')}
+      </div>
+      <label class="photo-upload-btn" id="photo-upload-btn">Изменить фото</label>
+      <input type="file" accept="image/*" id="photo-input" style="display:none;">
+
+      <label>Имя</label>
+      <input type="text" id="profile-name" value="${escapeHtml(me.name)}">
+
+      <label>Цвет (используется, если фото не выбрано)</label>
+      <div class="color-pick" id="profile-colors">
+        ${MEMBER_COLORS.map(c=>`<div class="color-swatch ${c===selectedColor?'selected':''}" data-color="${c}" style="background:${c};"></div>`).join('')}
+      </div>
+
+      <label>Анимированный переливающийся ник</label>
+      <div class="chip-grid" id="style-chips">
+        ${['none','gold','blue','red','teal','silver'].map(s=>`
+          <div class="chip ${((me.animated_style||'none')===s)?'selected':''}" data-style="${s}">
+            <span class="style-dot ${s}"></span>${s==='none'?'Без анимации':(s==='gold'?'Золотой':s==='blue'?'Синий':s==='red'?'Красный':s==='teal'?'Бирюзовый':'Серебряный')}
+          </div>`).join('')}
+      </div>
+      <p class="animated-preview-label" style="margin:10px 0 0;">Превью: <span id="animated-name-preview" class="${me.animated_style?('name-shimmer shimmer-'+me.animated_style):''}">${escapeHtml(me.name)}</span></p>
+
+      <div class="modal-error" id="profile-error"></div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="profile-cancel">Отмена</button>
+        <button class="btn btn-primary" id="profile-save">Сохранить</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  const preview = overlay.querySelector('#profile-preview');
+  function refreshPreview(){
+    if(pendingPhoto){
+      preview.style.backgroundImage = `url('${pendingPhoto}')`;
+      preview.style.background = '';
+      preview.style.backgroundImage = `url('${pendingPhoto}')`;
+      preview.style.backgroundSize = 'cover';
+      preview.style.backgroundPosition = 'center';
+      preview.textContent = '';
+    } else {
+      preview.style.backgroundImage = '';
+      preview.style.background = selectedColor;
+      const nameVal = overlay.querySelector('#profile-name').value.trim();
+      preview.textContent = nameVal ? nameVal[0].toUpperCase() : '?';
+    }
+  }
+
+  overlay.querySelector('#photo-upload-btn').addEventListener('click', ()=> overlay.querySelector('#photo-input').click());
+  overlay.querySelector('#photo-input').addEventListener('change', async (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    try{
+      pendingPhoto = await resizeImageToDataUrl(file, 160);
+      refreshPreview();
+    }catch(err){ toast('Не удалось загрузить фото'); }
+  });
+
+  overlay.querySelectorAll('#profile-colors .color-swatch').forEach(sw=>{
+    sw.addEventListener('click', ()=>{
+      overlay.querySelectorAll('#profile-colors .color-swatch').forEach(s=>s.classList.remove('selected'));
+      sw.classList.add('selected');
+      selectedColor = sw.getAttribute('data-color');
+      refreshPreview();
+    });
+  });
+
+  overlay.querySelector('#profile-name').addEventListener('input', (e)=>{
+    overlay.querySelector('#animated-name-preview').textContent = e.target.value.trim() || '…';
+    if(!pendingPhoto) refreshPreview();
+  });
+
+  overlay.querySelectorAll('#style-chips .chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      overlay.querySelectorAll('#style-chips .chip').forEach(c=>c.classList.remove('selected'));
+      chip.classList.add('selected');
+      const s = chip.getAttribute('data-style');
+      animatedStyle = s === 'none' ? null : s;
+      const nameSpan = overlay.querySelector('#animated-name-preview');
+      nameSpan.className = animatedStyle ? ('name-shimmer shimmer-'+animatedStyle) : '';
+    });
+  });
+
+  overlay.querySelector('#profile-cancel').addEventListener('click', ()=> overlay.remove());
+  overlay.addEventListener('click', (e)=>{ if(e.target===overlay) overlay.remove(); });
+
+  overlay.querySelector('#profile-save').addEventListener('click', async ()=>{
+    const nameVal = overlay.querySelector('#profile-name').value.trim();
+    const errEl = overlay.querySelector('#profile-error');
+    if(!nameVal){ errEl.textContent = 'Введите имя.'; return; }
+    const patch = {name: nameVal, color: selectedColor, animated_style: animatedStyle, photo: pendingPhoto};
+    const ok = await updateMemberRow(me.id, patch);
+    if(!ok) return;
+    Object.assign(me, patch);
+    overlay.remove();
+    toast('Профиль обновлён');
+    renderApp();
+  });
+}
+
+function openEditExpense(exp){
+  let selectedCategory = exp.categoryId;
+  let selectedMember = exp.memberId;
+  const overlay = document.createElement('div'); overlay.className = 'overlay';
+  overlay.innerHTML = `
+    <div class="modal">
+      <h2>Изменить трату</h2>
+      <label>Сумма</label>
+      <input class="amount-input" id="exp-amount" type="number" inputmode="decimal" placeholder="0" min="0" step="0.01" value="${exp.amount}">
+      <label>Категория</label>
+      <div class="chip-grid" id="cat-chips">
+        ${state.categories.map(c=>`<div class="chip ${c.id===selectedCategory?'selected':''}" data-cat="${c.id}"><span class="chip-dot" style="background:${resolveColor(c.color)};"></span>${c.name}</div>`).join('')}
+        <div class="chip add-cat-chip" id="add-cat-chip">+ своя категория</div>
+      </div>
+      <label>Кто платил</label>
+      <div class="chip-grid" id="member-chips">
+        ${state.members.map(m=>`<div class="chip ${m.id===selectedMember?'selected':''}" data-mem="${m.id}">${avatarHtml(m,16,8)}${escapeHtml(m.name)}</div>`).join('')}
+      </div>
+      <label>Дата</label>
+      <input type="date" id="exp-date" value="${exp.date}">
+      <label>Заметка (необязательно)</label>
+      <input type="text" id="exp-note" placeholder="Например, ужин в кафе" value="${exp.note ? escapeHtml(exp.note) : ''}">
+      <div class="modal-error" id="exp-error"></div>
+      <div class="modal-actions">
+        <button class="btn btn-danger" id="exp-delete">Удалить</button>
+        <button class="btn btn-secondary" id="exp-cancel">Отмена</button>
+        <button class="btn btn-primary" id="exp-save">Сохранить</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  function rebindCatChips(){
+    overlay.querySelectorAll('#cat-chips .chip[data-cat]').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        overlay.querySelectorAll('#cat-chips .chip').forEach(c=>c.classList.remove('selected'));
+        chip.classList.add('selected'); selectedCategory = chip.getAttribute('data-cat');
+      });
+    });
+  }
+  rebindCatChips();
+  overlay.querySelectorAll('#member-chips .chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      overlay.querySelectorAll('#member-chips .chip').forEach(c=>c.classList.remove('selected'));
+      chip.classList.add('selected'); selectedMember = chip.getAttribute('data-mem');
+    });
+  });
+  overlay.querySelector('#add-cat-chip').addEventListener('click', async ()=>{
+    const name = prompt('Название новой категории:');
+    if(!name || !name.trim()) return;
+    const color = pickCategoryColor();
+    const newCat = {id: uid(), name: name.trim(), color};
+    await addCategoryRow(newCat);
+    state.categories.push(newCat);
+    selectedCategory = newCat.id;
+    overlay.querySelector('#cat-chips').innerHTML =
+      state.categories.map(c=>`<div class="chip ${c.id===selectedCategory?'selected':''}" data-cat="${c.id}"><span class="chip-dot" style="background:${resolveColor(c.color)};"></span>${c.name}</div>`).join('')
+      + '<div class="chip add-cat-chip" id="add-cat-chip">+ своя категория</div>';
+    rebindCatChips();
+    overlay.querySelector('#add-cat-chip').replaceWith(overlay.querySelector('#add-cat-chip').cloneNode(true));
+  });
+
+  overlay.querySelector('#exp-cancel').addEventListener('click', ()=> overlay.remove());
+  overlay.addEventListener('click', (e)=>{ if(e.target===overlay) overlay.remove(); });
+
+  overlay.querySelector('#exp-delete').addEventListener('click', ()=>{
+    overlay.remove();
+    openDeleteConfirm(exp);
+  });
+
+  overlay.querySelector('#exp-save').addEventListener('click', async ()=>{
+    const amountVal = parseFloat(overlay.querySelector('#exp-amount').value);
+    const dateVal = overlay.querySelector('#exp-date').value;
+    const noteVal = overlay.querySelector('#exp-note').value.trim();
+    const errEl = overlay.querySelector('#exp-error');
+    if(!amountVal || amountVal<=0){ errEl.textContent = 'Укажите сумму больше нуля.'; return; }
+    if(!selectedMember){ errEl.textContent = 'Выберите, кто платил.'; return; }
+    if(!dateVal){ errEl.textContent = 'Укажите дату.'; return; }
+    const patch = {amount: amountVal, categoryId: selectedCategory, memberId: selectedMember, note: noteVal, date: dateVal};
+    const ok = await updateExpenseRow(exp.id, patch);
+    if(!ok) return;
+    overlay.remove(); toast('Трата обновлена');
+    const expDate = new Date(dateVal+'T00:00:00');
+    if(expDate.getFullYear() !== state.selectedYear || expDate.getMonth() !== state.selectedMonth){
+      state.selectedYear = expDate.getFullYear();
+      state.selectedMonth = expDate.getMonth();
+      state.selectedDay = dateVal;
+      renderApp();
+    } else {
+      refreshData();
+    }
+  });
+  setTimeout(()=> overlay.querySelector('#exp-amount').focus(), 50);
+}
+
+// ---------- АНАЛИТИКА ----------
+
+function renderAnalyticsShell(){
+  return `
+    ${renderTopbar()}
+    <div class="period-toggle" id="period-toggle">
+      <button data-period="week" class="${state.comparePeriod==='week'?'active':''}">Неделя</button>
+      <button data-period="month" class="${state.comparePeriod==='month'?'active':''}">Месяц</button>
+    </div>
+
+    <div class="analytics-section">
+      <h3>Сравнение периодов</h3>
+      <div id="compare-content"><div class="loading-note">Считаем…</div></div>
+    </div>
+
+    <div class="analytics-section">
+      <h3>Динамика трат</h3>
+      <div class="trend-chart" id="trend-chart"><div class="loading-note">Считаем…</div></div>
+    </div>
+
+    <div class="analytics-section">
+      <h3>Изменения по категориям</h3>
+      <div id="category-changes"><div class="loading-note">Считаем…</div></div>
+    </div>
+
+    <div class="analytics-section">
+      <h3>Траты по дням недели <span style="text-transform:none;letter-spacing:0;opacity:.6;">· последние 12 недель</span></h3>
+      <div class="weekday-chart" id="weekday-chart"><div class="loading-note">Считаем…</div></div>
+    </div>
+  `;
+}
+
+function attachAnalyticsEvents(){
+  document.querySelectorAll('#period-toggle button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      state.comparePeriod = btn.getAttribute('data-period');
+      document.querySelectorAll('#period-toggle button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      loadAnalyticsData();
+    });
+  });
+}
+
+async function loadAnalyticsData(){
+  const memberId = state.filterMemberId;
+  const period = state.comparePeriod;
+
+  let curRange, prevRange, dayCountCur, dayCountPrev, curLabel, prevLabel;
+  if(period === 'week'){
+    curRange = currentWeekRange(0);
+    prevRange = currentWeekRange(-1);
+    dayCountCur = 7; dayCountPrev = 7;
+    curLabel = 'Эта неделя'; prevLabel = 'прошлой неделей';
+  } else {
+    curRange = currentMonthRangeReal(0);
+    prevRange = currentMonthRangeReal(-1);
+    dayCountCur = curRange.end.getDate(); dayCountPrev = prevRange.end.getDate();
+    curLabel = 'Этот месяц'; prevLabel = 'прошлым месяцем';
+  }
+
+  const trendCount = 8;
+  const trendStart = period==='week' ? currentWeekRange(-(trendCount-1)).start : currentMonthRangeReal(-(trendCount-1)).start;
+  const trendEnd = curRange.end;
+
+  const wdEnd = new Date();
+  const wdStart = new Date(); wdStart.setDate(wdEnd.getDate()-83);
+
+  const [curExp, prevExp, trendExp, wdExp] = await Promise.all([
+    fetchExpensesRange(toDateStr(curRange.start), toDateStr(curRange.end), memberId),
+    fetchExpensesRange(toDateStr(prevRange.start), toDateStr(prevRange.end), memberId),
+    fetchExpensesRange(toDateStr(trendStart), toDateStr(trendEnd), memberId),
+    fetchExpensesRange(toDateStr(wdStart), toDateStr(wdEnd), memberId),
+  ]);
+
+  state.analytics = { curExp, prevExp, curRange, prevRange, dayCountCur, dayCountPrev, curLabel, prevLabel, trendExp, wdExp };
+
+  renderComparison();
+  renderTrend();
+  renderCategoryChanges();
+  renderWeekdayPattern();
+}
+
+function renderComparison(){
+  const el = document.getElementById('compare-content');
+  if(!el) return;
+  const a = state.analytics;
+  const curStats = periodStats(a.curExp, a.dayCountCur);
+  const prevStats = periodStats(a.prevExp, a.dayCountPrev);
+  const totalChange = changeInfo(curStats.total, prevStats.total);
+  const avgChange = changeInfo(curStats.avgPerDay, prevStats.avgPerDay);
+
+  function row(label, curVal, prevVal, change){
+    const badgeText = change.pct===null ? '' : `${change.sign}${Math.abs(change.pct).toFixed(0)}%`;
+    const diffText = `${change.diff>=0?'+':'−'}${fmtMoney(Math.abs(change.diff))}`;
+    return `<div class="compare-metric">
+      <div class="compare-metric-label">${label}</div>
+      <div class="compare-metric-value">${fmtMoney(curVal)}${badgeText?`<span class="change-badge ${change.cls}">${badgeText}</span>`:''}</div>
+      <div class="compare-metric-sub">было ${fmtMoney(prevVal)} · разница ${diffText}</div>
+    </div>`;
+  }
+
+  let topCatRow;
+  if(!curStats.topCategory && !prevStats.topCategory){
+    topCatRow = `<div class="compare-metric"><div class="compare-metric-label">Самая затратная категория</div><div class="compare-metric-sub">Нет данных</div></div>`;
+  } else {
+    const curCat = curStats.topCategory ? categoryById(curStats.topCategory.id) : null;
+    const prevCat = prevStats.topCategory ? categoryById(prevStats.topCategory.id) : null;
+    topCatRow = `<div class="compare-metric">
+      <div class="compare-metric-label">Самая затратная категория</div>
+      <div class="compare-metric-value" style="font-size:16px;">${curCat ? curCat.name : '—'}${curStats.topCategory ? ` <span style="font-family:var(--font-mono);font-size:13px;color:rgba(243,236,221,0.5);">(${fmtMoney(curStats.topCategory.amt)})</span>` : ''}</div>
+      <div class="compare-metric-sub">было: ${prevCat ? prevCat.name : '—'}${prevStats.topCategory ? ` (${fmtMoney(prevStats.topCategory.amt)})` : ''}</div>
+    </div>`;
+  }
+
+  el.innerHTML = `
+    <div class="compare-card">
+      <h4>${a.curLabel} по сравнению с ${a.prevLabel}</h4>
+      ${row('Общая сумма расходов', curStats.total, prevStats.total, totalChange)}
+      ${row('Средний расход в день', curStats.avgPerDay, prevStats.avgPerDay, avgChange)}
+      ${topCatRow}
+    </div>
+  `;
+}
+
+function renderTrend(){
+  const el = document.getElementById('trend-chart');
+  if(!el) return;
+  const a = state.analytics;
+  const period = state.comparePeriod;
+  const count = 8;
+  const points = [];
+  for(let i=count-1; i>=0; i--){
+    let range, label;
+    if(period === 'week'){
+      range = currentWeekRange(-i);
+      label = pad(range.start.getDate())+'.'+pad(range.start.getMonth()+1);
+    } else {
+      range = currentMonthRangeReal(-i);
+      label = MONTHS_SHORT[range.start.getMonth()];
+    }
+    const startStr = toDateStr(range.start), endStr = toDateStr(range.end);
+    const total = a.trendExp.filter(e => e.date >= startStr && e.date <= endStr).reduce((s,e)=>s+e.amount,0);
+    points.push({label, total, isCurrent: i===0});
+  }
+  const max = Math.max(...points.map(p=>p.total), 1);
+  el.innerHTML = points.map(p=>{
+    const h = p.total>0 ? Math.max(Math.round((p.total/max)*100),4) : 2;
+    return `<div class="trend-bar-col ${p.isCurrent?'current':''}">
+      <div class="trend-bar" style="height:${h}%;" title="${fmtMoney(p.total)}"></div>
+      <div class="trend-bar-label">${p.label}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderCategoryChanges(){
+  const el = document.getElementById('category-changes');
+  if(!el) return;
+  const a = state.analytics;
+  const curMap = sumByCategoryMap(a.curExp);
+  const prevMap = sumByCategoryMap(a.prevExp);
+  const ids = new Set([...Object.keys(curMap), ...Object.keys(prevMap)]);
+  const rows = Array.from(ids).map(id=>{
+    const cur = curMap[id]||0, prev = prevMap[id]||0;
+    return {id, cur, prev, change: changeInfo(cur, prev)};
+  }).sort((x,y)=> Math.abs(y.change.diff) - Math.abs(x.change.diff));
+
+  if(rows.length===0){ el.innerHTML = '<div class="pie-empty">Нет данных для сравнения.</div>'; return; }
+
+  el.innerHTML = rows.map(r=>{
+    const cat = categoryById(r.id);
+    const badgeText = r.change.pct===null ? '—' : `${r.change.sign}${Math.abs(r.change.pct).toFixed(0)}%`;
+    const diffText = `${r.change.diff>=0?'+':'−'}${fmtMoney(Math.abs(r.change.diff))}`;
+    return `<div class="cat-change-row">
+      <span class="cat-change-name">${cat.name}</span>
+      <span class="cat-change-nums">
+        <span>${fmtMoney(r.cur)}</span>
+        <span style="opacity:.5;">${diffText}</span>
+        <span class="change-badge ${r.change.cls}">${badgeText}</span>
+      </span>
+    </div>`;
+  }).join('');
+}
+
+function renderWeekdayPattern(){
+  const el = document.getElementById('weekday-chart');
+  if(!el) return;
+  const a = state.analytics;
+  const sums = [0,0,0,0,0,0,0];
+  a.wdExp.forEach(e=>{
+    const d = new Date(e.date+'T00:00:00');
+    let idx = d.getDay()-1; if(idx<0) idx = 6;
+    sums[idx] += e.amount;
+  });
+  const max = Math.max(...sums, 1);
+  const peakVal = Math.max(...sums);
+  el.innerHTML = sums.map((v,i)=>{
+    const h = v>0 ? Math.max(Math.round((v/max)*100),4) : 2;
+    return `<div class="weekday-bar-col ${v===peakVal && v>0 ? 'peak' : ''}">
+      <div class="weekday-bar" style="height:${h}%;" title="${fmtMoney(v)}"></div>
+      <div class="weekday-bar-label">${WEEKDAYS_SHORT[i]}</div>
+      <div class="weekday-bar-amt">${v>0 ? Math.round(v).toLocaleString('ru-RU') : ''}</div>
+    </div>`;
+  }).join('');
+}
+
+function openDeleteConfirm(exp){
+  const cat = categoryById(exp.categoryId); const m = memberById(exp.memberId);
+  const overlay = document.createElement('div'); overlay.className = 'overlay';
+  overlay.innerHTML = `
+    <div class="modal" style="max-width:340px;">
+      <h2>Удалить трату?</h2>
+      <p style="font-size:14px;color:var(--ink-soft);">${cat.name} · ${fmtMoney(exp.amount)} · ${m?m.name:'—'}${exp.note? ' · '+escapeHtml(exp.note):''}</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="del-cancel">Отмена</button>
+        <button class="btn btn-danger" id="del-confirm">Удалить</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', (e)=>{ if(e.target===overlay) overlay.remove(); });
+  overlay.querySelector('#del-cancel').addEventListener('click', ()=> overlay.remove());
+  overlay.querySelector('#del-confirm').addEventListener('click', async ()=>{
+    await deleteExpenseRow(exp.id);
+    overlay.remove(); toast('Трата удалена'); refreshData();
+  });
+}
+
+async function init(){
+  if(!sb){ renderApp(); return; }
+  await Promise.all([loadMembers(), loadCategories()]);
+  loadMyMemberId();
+  renderApp();
+  sb.channel('expenses-changes')
+    .on('postgres_changes', {event:'*', schema:'public', table:'expenses'}, ()=>{ if(state.myMemberId) refreshData(); })
+    .subscribe();
+}
+init();
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+</script>
+</body>
+</html>
