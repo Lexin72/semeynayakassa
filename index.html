@@ -409,7 +409,7 @@ function changeInfo(current, previous){
   else if(current !== 0) pct = 100;
   let cls = 'change-flat', sign = '';
   if(diff > 0.5){ cls = 'change-up'; sign = '+'; }
-  else if(diff < -0.5){ cls = 'change-down'; }
+  else if(diff < -0.5){ cls = 'change-down'; sign = '−'; }
   return {diff, pct, cls, sign};
 }
 
@@ -1057,7 +1057,7 @@ function renderAnalyticsShell(){
     </div>
 
     <div class="analytics-section">
-      <h3>Траты по дням недели <span style="text-transform:none;letter-spacing:0;opacity:.6;">· последние 12 недель</span></h3>
+      <h3>Траты по дням недели</h3>
       <div class="weekday-chart" id="weekday-chart"><div class="loading-note">Считаем…</div></div>
     </div>
   `;
@@ -1132,25 +1132,10 @@ function renderComparison(){
     </div>`;
   }
 
-  let topCatRow;
-  if(!curStats.topCategory && !prevStats.topCategory){
-    topCatRow = `<div class="compare-metric"><div class="compare-metric-label">Самая затратная категория</div><div class="compare-metric-sub">Нет данных</div></div>`;
-  } else {
-    const curCat = curStats.topCategory ? categoryById(curStats.topCategory.id) : null;
-    const prevCat = prevStats.topCategory ? categoryById(prevStats.topCategory.id) : null;
-    topCatRow = `<div class="compare-metric">
-      <div class="compare-metric-label">Самая затратная категория</div>
-      <div class="compare-metric-value" style="font-size:16px;">${curCat ? curCat.name : '—'}${curStats.topCategory ? ` <span style="font-family:var(--font-mono);font-size:13px;color:rgba(243,236,221,0.5);">(${fmtMoney(curStats.topCategory.amt)})</span>` : ''}</div>
-      <div class="compare-metric-sub">было: ${prevCat ? prevCat.name : '—'}${prevStats.topCategory ? ` (${fmtMoney(prevStats.topCategory.amt)})` : ''}</div>
-    </div>`;
-  }
-
   el.innerHTML = `
     <div class="compare-card">
-      <h4>${a.curLabel} по сравнению с ${a.prevLabel}</h4>
       ${row('Общая сумма расходов', curStats.total, prevStats.total, totalChange)}
       ${row('Средний расход в день', curStats.avgPerDay, prevStats.avgPerDay, avgChange)}
-      ${topCatRow}
     </div>
   `;
 }
