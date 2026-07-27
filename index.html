@@ -29,6 +29,8 @@
     --rust:#B3543F;
     --cat-1:#7C9473; --cat-2:#5B7FA6; --cat-3:#B3543F; --cat-4:#D4A73D;
     --cat-5:#8C5B7A; --cat-6:#6B7280; --cat-7:#4E8C82; --cat-8:#A65D8E;
+    --spring:cubic-bezier(.34,1.56,.64,1);
+    --ease:cubic-bezier(.4,0,.2,1);
     --font-display:'Fraunces', serif;
     --font-body:'Inter', sans-serif;
     --font-mono:'IBM Plex Mono', monospace;
@@ -165,39 +167,54 @@
   .page-tabs button{border:none;background:transparent;color:rgba(243,236,221,0.6);font-family:var(--font-body);font-size:13px;font-weight:600;padding:7px 14px;border-radius:8px;cursor:pointer;}
   .page-tabs button.active{background:var(--gold);color:#16302B;}
 
-  .analytics-section{background:var(--bg-panel);border-radius:16px;padding:18px;margin-bottom:16px;border:1px solid rgba(243,236,221,0.08);}
+  @keyframes sectionRise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .analytics-section{background:var(--bg-panel);border-radius:16px;padding:18px;margin-bottom:16px;border:1px solid rgba(243,236,221,0.08);animation:sectionRise .4s var(--ease) both;}
   .analytics-section h3{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(243,236,221,0.5);margin:0 0 14px;font-weight:600;}
 
   .period-toggle{display:flex;background:var(--bg-panel-2);border-radius:10px;padding:3px;width:fit-content;margin-bottom:16px;}
-  .period-toggle button{border:none;background:transparent;color:rgba(243,236,221,0.6);padding:7px 18px;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;font-family:var(--font-body);}
+  .period-toggle button{border:none;background:transparent;color:rgba(243,236,221,0.6);padding:7px 18px;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;font-family:var(--font-body);transition:background .2s var(--spring), color .2s ease;}
   .period-toggle button.active{background:var(--gold);color:#16302B;}
 
   .compare-card h4{font-size:12px;color:rgba(243,236,221,0.5);margin:0 0 14px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;}
-  .compare-metric{margin-bottom:14px;}
+  .compare-metric{margin-bottom:14px;animation:sectionRise .45s var(--ease) both;}
   .compare-metric:last-child{margin-bottom:0;}
   .compare-metric-label{font-size:11.5px;color:rgba(243,236,221,0.5);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.04em;}
-  .compare-metric-value{font-family:var(--font-mono);font-size:19px;font-weight:700;color:var(--paper);}
+  .compare-metric-value{font-family:var(--font-mono);font-size:19px;font-weight:700;color:var(--paper);font-variant-numeric:tabular-nums;}
   .compare-metric-sub{font-size:12px;font-family:var(--font-mono);margin-top:3px;color:rgba(243,236,221,0.45);}
-  .change-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:11.5px;padding:1px 8px;border-radius:999px;margin-left:6px;}
+  .change-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:11.5px;padding:1px 8px;border-radius:999px;margin-left:6px;animation:badgePop .35s var(--spring) both;}
+  @keyframes badgePop{from{opacity:0;transform:scale(0.6);}to{opacity:1;transform:scale(1);}}
   .change-up{background:rgba(179,84,63,0.18);color:#e08a72;}
   .change-down{background:rgba(124,148,115,0.2);color:#9fc492;}
   .change-flat{background:rgba(243,236,221,0.08);color:rgba(243,236,221,0.5);}
 
   .trend-chart{display:flex;align-items:flex-end;gap:6px;height:110px;}
-  .trend-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:4px;}
-  .trend-bar{width:70%;background:rgba(212,167,61,0.35);border-radius:3px 3px 0 0;min-height:2px;transition:background .15s ease;}
+  .trend-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:4px;cursor:pointer;}
+  @keyframes barGrow{from{transform:scaleY(0);}to{transform:scaleY(1);}}
+  .trend-bar{width:70%;background:rgba(212,167,61,0.35);border-radius:3px 3px 0 0;min-height:2px;transition:background .2s ease, width .2s var(--spring), transform .15s var(--spring);transform-origin:bottom;animation:barGrow .5s var(--spring) both;}
+  .trend-bar-col:hover .trend-bar{transform:scaleY(1.04);}
   .trend-bar-col.current .trend-bar{width:100%;background:var(--gold);}
-  .trend-bar-label{font-size:9.5px;color:rgba(243,236,221,0.4);margin-top:6px;font-family:var(--font-mono);text-align:center;}
+  .trend-bar-col.trend-selected .trend-bar{background:var(--gold-soft);box-shadow:0 0 0 2px rgba(232,207,143,0.4);}
+  .trend-bar-label{font-size:9.5px;color:rgba(243,236,221,0.4);margin-top:6px;font-family:var(--font-mono);text-align:center;transition:color .15s ease;}
+  .trend-bar-col.trend-selected .trend-bar-label{color:var(--gold-soft);font-weight:600;}
 
-  .cat-change-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px dashed rgba(243,236,221,0.1);font-size:13px;gap:10px;}
+  @keyframes panelDrop{from{opacity:0;transform:translateY(-8px) scaleY(0.96);}to{opacity:1;transform:translateY(0) scaleY(1);}}
+  .trend-breakdown{margin-top:14px;padding-top:14px;border-top:1px dashed rgba(243,236,221,0.12);animation:panelDrop .3s var(--spring) both;transform-origin:top;}
+  .trend-breakdown-title{font-size:11px;color:rgba(243,236,221,0.5);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
+  .trend-breakdown-close{cursor:pointer;color:rgba(243,236,221,0.4);font-family:var(--font-mono);font-size:11px;text-decoration:underline;}
+  .trend-breakdown-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px;animation:sectionRise .3s var(--ease) both;}
+  .trend-breakdown-name{color:rgba(243,236,221,0.85);}
+  .trend-breakdown-amt{font-family:var(--font-mono);color:var(--gold-soft);font-weight:600;font-variant-numeric:tabular-nums;}
+
+  .cat-change-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px dashed rgba(243,236,221,0.1);font-size:13px;gap:10px;animation:sectionRise .4s var(--ease) both;}
   .cat-change-row:last-child{border-bottom:none;}
   .cat-change-name{color:rgba(243,236,221,0.85);min-width:0;}
-  .cat-change-nums{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:12.5px;color:rgba(243,236,221,0.6);flex-shrink:0;}
+  .cat-change-nums{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:12.5px;color:rgba(243,236,221,0.6);flex-shrink:0;font-variant-numeric:tabular-nums;}
 
   .weekday-chart{display:flex;align-items:flex-end;gap:8px;height:110px;}
   .weekday-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
-  .weekday-bar{width:100%;background:var(--gold);border-radius:4px 4px 0 0;min-height:2px;opacity:0.55;transition:opacity .15s ease;}
-  .weekday-bar-col.peak .weekday-bar{opacity:1;}
+  .weekday-bar{width:100%;background:var(--gold);border-radius:4px 4px 0 0;min-height:2px;opacity:0.55;transition:opacity .2s ease, transform .15s var(--spring);transform-origin:bottom;animation:barGrow .5s var(--spring) both;}
+  .weekday-bar-col.peak .weekday-bar{opacity:1;animation:barGrow .5s var(--spring) both, peakPulse 2.2s ease-in-out .6s infinite;}
+  @keyframes peakPulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.25);}}
   .weekday-bar-label{font-size:10.5px;color:rgba(243,236,221,0.5);margin-top:6px;font-family:var(--font-mono);text-transform:uppercase;}
   .weekday-bar-amt{font-size:9px;color:rgba(243,236,221,0.35);margin-top:2px;font-family:var(--font-mono);}
 </style>
@@ -239,10 +256,24 @@ let state = {
   currentPage: 'home',
   comparePeriod: 'week',
   analytics: null,
+  selectedTrendIndex: null,
+  trendPoints: null,
 };
 
 function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
 function fmtMoney(n){ const sign = n<0 ? '−' : ''; return sign + Math.abs(Math.round(n)).toLocaleString('ru-RU') + ' ₽'; }
+function animateCountUp(el, endValue, formatFn, duration){
+  duration = duration || 650;
+  const startTime = performance.now();
+  function step(now){
+    const t = Math.min((now-startTime)/duration, 1);
+    const eased = 1 - Math.pow(1-t, 3);
+    el.textContent = formatFn(endValue*eased);
+    if(t<1) requestAnimationFrame(step);
+    else el.textContent = formatFn(endValue);
+  }
+  requestAnimationFrame(step);
+}
 function toast(msg){ const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 1800); }
 function pad(n){ return n<10 ? '0'+n : ''+n; }
 function toDateStr(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
@@ -1049,6 +1080,7 @@ function renderAnalyticsShell(){
     <div class="analytics-section">
       <h3>Динамика трат</h3>
       <div class="trend-chart" id="trend-chart"><div class="loading-note">Считаем…</div></div>
+      <div id="trend-breakdown-container"></div>
     </div>
 
     <div class="analytics-section">
@@ -1067,6 +1099,7 @@ function attachAnalyticsEvents(){
   document.querySelectorAll('#period-toggle button').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       state.comparePeriod = btn.getAttribute('data-period');
+      state.selectedTrendIndex = null;
       document.querySelectorAll('#period-toggle button').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
       loadAnalyticsData();
@@ -1127,7 +1160,7 @@ function renderComparison(){
     const diffText = `${change.diff>=0?'+':'−'}${fmtMoney(Math.abs(change.diff))}`;
     return `<div class="compare-metric">
       <div class="compare-metric-label">${label}</div>
-      <div class="compare-metric-value">${fmtMoney(curVal)}${badgeText?`<span class="change-badge ${change.cls}">${badgeText}</span>`:''}</div>
+      <div class="compare-metric-value"><span class="count-value" data-value="${curVal}">${fmtMoney(0)}</span>${badgeText?`<span class="change-badge ${change.cls}">${badgeText}</span>`:''}</div>
       <div class="compare-metric-sub">было ${fmtMoney(prevVal)} · разница ${diffText}</div>
     </div>`;
   }
@@ -1138,6 +1171,10 @@ function renderComparison(){
       ${row('Средний расход в день', curStats.avgPerDay, prevStats.avgPerDay, avgChange)}
     </div>
   `;
+  el.querySelectorAll('.count-value').forEach((span, idx)=>{
+    const target = parseFloat(span.getAttribute('data-value'));
+    setTimeout(()=> animateCountUp(span, target, fmtMoney, 700), idx*100);
+  });
 }
 
 function renderTrend(){
@@ -1157,17 +1194,63 @@ function renderTrend(){
       label = MONTHS_SHORT[range.start.getMonth()];
     }
     const startStr = toDateStr(range.start), endStr = toDateStr(range.end);
-    const total = a.trendExp.filter(e => e.date >= startStr && e.date <= endStr).reduce((s,e)=>s+e.amount,0);
-    points.push({label, total, isCurrent: i===0});
+    const periodExpenses = a.trendExp.filter(e => e.date >= startStr && e.date <= endStr);
+    const total = periodExpenses.reduce((s,e)=>s+e.amount,0);
+    points.push({label, total, isCurrent: i===0, periodExpenses});
   }
+  state.trendPoints = points;
   const max = Math.max(...points.map(p=>p.total), 1);
-  el.innerHTML = points.map(p=>{
+  el.innerHTML = points.map((p, idx)=>{
     const h = p.total>0 ? Math.max(Math.round((p.total/max)*100),4) : 2;
-    return `<div class="trend-bar-col ${p.isCurrent?'current':''}">
-      <div class="trend-bar" style="height:${h}%;" title="${fmtMoney(p.total)}"></div>
+    const sel = state.selectedTrendIndex===idx ? 'trend-selected' : '';
+    return `<div class="trend-bar-col ${p.isCurrent?'current':''} ${sel}" data-idx="${idx}">
+      <div class="trend-bar" style="height:${h}%; animation-delay:${(idx*0.03).toFixed(2)}s;" title="${fmtMoney(p.total)}"></div>
       <div class="trend-bar-label">${p.label}</div>
     </div>`;
   }).join('');
+
+  el.querySelectorAll('.trend-bar-col').forEach(col=>{
+    col.addEventListener('click', ()=>{
+      const idx = parseInt(col.getAttribute('data-idx'));
+      state.selectedTrendIndex = state.selectedTrendIndex === idx ? null : idx;
+      renderTrend();
+    });
+  });
+
+  renderTrendBreakdown();
+}
+
+function renderTrendBreakdown(){
+  const container = document.getElementById('trend-breakdown-container');
+  if(!container) return;
+  if(state.selectedTrendIndex===null || !state.trendPoints || !state.trendPoints[state.selectedTrendIndex]){
+    container.innerHTML = '';
+    return;
+  }
+  const point = state.trendPoints[state.selectedTrendIndex];
+  const map = sumByCategoryMap(point.periodExpenses);
+  const rows = Object.entries(map).sort((a,b)=>b[1]-a[1]);
+  const periodLabel = point.isCurrent ? 'текущий период' : point.label;
+
+  if(rows.length===0){
+    container.innerHTML = `<div class="trend-breakdown">
+      <div class="trend-breakdown-title"><span>Разбивка за ${periodLabel}</span><span class="trend-breakdown-close" id="trend-breakdown-close">закрыть</span></div>
+      <div class="pie-empty">Трат не было.</div>
+    </div>`;
+  } else {
+    container.innerHTML = `<div class="trend-breakdown">
+      <div class="trend-breakdown-title"><span>Разбивка за ${periodLabel}</span><span class="trend-breakdown-close" id="trend-breakdown-close">закрыть</span></div>
+      ${rows.map(([id,amt], i)=>{
+        const cat = categoryById(id);
+        return `<div class="trend-breakdown-row" style="animation-delay:${(i*0.04).toFixed(2)}s;"><span class="trend-breakdown-name">${cat.name}</span><span class="trend-breakdown-amt">${fmtMoney(amt)}</span></div>`;
+      }).join('')}
+    </div>`;
+  }
+  const closeBtn = document.getElementById('trend-breakdown-close');
+  if(closeBtn) closeBtn.addEventListener('click', ()=>{
+    state.selectedTrendIndex = null;
+    renderTrend();
+  });
 }
 
 function renderCategoryChanges(){
@@ -1184,11 +1267,11 @@ function renderCategoryChanges(){
 
   if(rows.length===0){ el.innerHTML = '<div class="pie-empty">Нет данных для сравнения.</div>'; return; }
 
-  el.innerHTML = rows.map(r=>{
+  el.innerHTML = rows.map((r, idx)=>{
     const cat = categoryById(r.id);
     const badgeText = r.change.pct===null ? '—' : `${r.change.sign}${Math.abs(r.change.pct).toFixed(0)}%`;
     const diffText = `${r.change.diff>=0?'+':'−'}${fmtMoney(Math.abs(r.change.diff))}`;
-    return `<div class="cat-change-row">
+    return `<div class="cat-change-row" style="animation-delay:${(idx*0.04).toFixed(2)}s;">
       <span class="cat-change-name">${cat.name}</span>
       <span class="cat-change-nums">
         <span>${fmtMoney(r.cur)}</span>
@@ -1214,7 +1297,7 @@ function renderWeekdayPattern(){
   el.innerHTML = sums.map((v,i)=>{
     const h = v>0 ? Math.max(Math.round((v/max)*100),4) : 2;
     return `<div class="weekday-bar-col ${v===peakVal && v>0 ? 'peak' : ''}">
-      <div class="weekday-bar" style="height:${h}%;" title="${fmtMoney(v)}"></div>
+      <div class="weekday-bar" style="height:${h}%; animation-delay:${(i*0.04).toFixed(2)}s;" title="${fmtMoney(v)}"></div>
       <div class="weekday-bar-label">${WEEKDAYS_SHORT[i]}</div>
       <div class="weekday-bar-amt">${v>0 ? Math.round(v).toLocaleString('ru-RU') : ''}</div>
     </div>`;
