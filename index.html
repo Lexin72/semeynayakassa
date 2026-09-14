@@ -232,9 +232,72 @@
   @keyframes peakPulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.25);}}
   .weekday-bar-label{font-size:10.5px;color:rgba(243,236,221,0.5);margin-top:6px;font-family:var(--font-mono);text-transform:uppercase;}
   .weekday-bar-amt{font-size:9px;color:rgba(243,236,221,0.35);margin-top:2px;font-family:var(--font-mono);}
+
+  /* ---------- Бюджет месяца ---------- */
+  .budget-wrap{margin:-8px 0 18px;background:var(--bg-panel);border:1px solid rgba(243,236,221,0.08);border-radius:14px;padding:12px 14px;cursor:pointer;transition:border-color .15s ease;}
+  .budget-wrap:hover{border-color:rgba(212,167,61,0.35);}
+  .budget-top{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;margin-bottom:8px;gap:10px;}
+  .budget-label{color:rgba(243,236,221,0.55);text-transform:uppercase;letter-spacing:0.06em;font-size:10.5px;}
+  .budget-nums{font-family:var(--font-mono);font-size:12.5px;color:rgba(243,236,221,0.75);}
+  .budget-track{height:8px;border-radius:5px;background:rgba(243,236,221,0.08);overflow:hidden;}
+  .budget-fill{height:100%;border-radius:5px;width:0;transition:width .8s var(--ease), background .3s ease;}
+  .budget-fill.ok{background:linear-gradient(90deg,#7C9473,#9fc492);}
+  .budget-fill.warn{background:linear-gradient(90deg,#D4A73D,#e8cf8f);}
+  .budget-fill.over{background:linear-gradient(90deg,#B3543F,#e08a72);}
+  .budget-note{font-size:11px;margin-top:7px;color:rgba(243,236,221,0.5);font-family:var(--font-mono);}
+  .budget-note.over{color:#e08a72;}
+  .budget-empty{font-size:12px;color:rgba(243,236,221,0.45);font-style:italic;}
+
+  /* ---------- Поиск по тратам ---------- */
+  .tape-toolbar{display:flex;gap:8px;align-items:center;margin:14px 0 6px;}
+  .search-input{flex:1;min-width:0;background:var(--bg-panel);border:1px solid rgba(243,236,221,0.12);color:var(--paper);border-radius:999px;padding:9px 14px;font-family:var(--font-body);font-size:13px;outline:none;transition:border-color .15s ease;}
+  .search-input::placeholder{color:rgba(243,236,221,0.35);}
+  .search-input:focus{border-color:var(--gold);}
+  .search-clear{background:var(--bg-panel);border:1px solid rgba(243,236,221,0.12);color:rgba(243,236,221,0.6);border-radius:50%;width:32px;height:32px;cursor:pointer;flex-shrink:0;font-size:14px;}
+  .search-clear:hover{border-color:var(--gold);color:var(--gold-soft);}
+  .search-count{font-size:11.5px;color:rgba(243,236,221,0.45);font-family:var(--font-mono);margin:2px 4px 8px;}
+
+  /* ---------- Управление категориями ---------- */
+  .cat-manage-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px dashed rgba(27,36,32,0.15);}
+  .cat-manage-row:last-child{border-bottom:none;}
+  .cat-manage-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  .cat-manage-name{flex:1;min-width:0;font-size:14px;color:var(--ink);background:transparent;border:1px solid transparent;border-radius:6px;padding:5px 7px;font-family:var(--font-body);}
+  .cat-manage-name:focus{border-color:rgba(27,36,32,0.25);background:#fff;outline:none;}
+  .cat-manage-count{font-size:11px;font-family:var(--font-mono);color:var(--ink-soft);flex-shrink:0;}
+  .cat-del-btn{background:transparent;border:none;color:var(--rust);cursor:pointer;font-size:15px;padding:4px 6px;border-radius:6px;flex-shrink:0;}
+  .cat-del-btn:hover{background:rgba(179,84,63,0.12);}
+  .cat-add-row{display:flex;gap:8px;margin-top:12px;}
+  .cat-add-row input{flex:1;}
+  .cat-add-row .btn{flex:0 0 auto;padding:10px 16px;}
+
+  /* ---------- Undo-тост ---------- */
+  .toast-undo{background:transparent;border:none;color:var(--gold-soft);font-weight:700;cursor:pointer;margin-left:14px;font-size:13px;text-decoration:underline;font-family:var(--font-body);pointer-events:auto;}
+  .toast.with-action{pointer-events:auto;display:flex;align-items:center;}
+
+  /* ---------- Офлайн-баннер ---------- */
+  .offline-banner{position:fixed;top:0;left:0;right:0;background:var(--rust);color:#fff;text-align:center;font-size:12.5px;padding:7px 12px;z-index:70;transform:translateY(-100%);transition:transform .25s var(--ease);font-family:var(--font-body);}
+  .offline-banner.show{transform:translateY(0);}
+
+  /* ---------- Состояния загрузки ---------- */
+  .btn[disabled]{opacity:0.6;cursor:default;pointer-events:none;}
+  .btn.loading{position:relative;color:transparent !important;}
+  .btn.loading::after{content:"";position:absolute;top:50%;left:50%;width:15px;height:15px;margin:-8px 0 0 -8px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;}
+  .btn-secondary.loading::after{border-color:rgba(27,36,32,0.25);border-top-color:var(--ink);}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* ---------- Прочее ---------- */
+  .swipe-hint{text-align:center;font-size:10.5px;color:rgba(243,236,221,0.28);margin:-10px 0 14px;font-family:var(--font-mono);}
+  @media (min-width:761px){.swipe-hint{display:none;}}
+  .quick-amounts{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+  .quick-amt{padding:5px 11px;border-radius:999px;background:rgba(27,36,32,0.06);border:1px solid rgba(27,36,32,0.12);color:var(--ink-soft);font-size:12px;font-family:var(--font-mono);cursor:pointer;transition:background .15s ease;}
+  .quick-amt:hover{background:rgba(27,36,32,0.12);color:var(--ink);}
+  .manage-cats-link{font-size:11.5px;color:var(--gold-soft);cursor:pointer;background:none;border:none;text-decoration:underline;font-family:var(--font-body);padding:0;margin-left:auto;}
+  .label-row{display:flex;align-items:center;gap:8px;}
+  .label-row label{margin-bottom:0;}
 </style>
 </head>
 <body>
+<div class="offline-banner" id="offline-banner">Нет соединения — данные не сохраняются</div>
 <div class="app" id="app"><div class="loading-note">Открываем кассу…</div></div>
 <div class="toast" id="toast"></div>
 
@@ -274,6 +337,8 @@ let state = {
   selectedTrendIndex: null,
   trendPoints: null,
   memberPickerOpen: false,
+  monthlyBudget: null,
+  searchQuery: '',
 };
 
 function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
@@ -290,7 +355,43 @@ function animateCountUp(el, endValue, formatFn, duration){
   }
   requestAnimationFrame(step);
 }
-function toast(msg){ const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 1800); }
+let toastTimer = null;
+function toast(msg, action){
+  const t = document.getElementById('toast');
+  if(toastTimer) clearTimeout(toastTimer);
+  t.innerHTML = '';
+  t.appendChild(document.createTextNode(msg));
+  if(action){
+    t.classList.add('with-action');
+    const b = document.createElement('button');
+    b.className = 'toast-undo';
+    b.textContent = action.label;
+    b.addEventListener('click', ()=>{
+      t.classList.remove('show','with-action');
+      if(toastTimer) clearTimeout(toastTimer);
+      action.onClick();
+    });
+    t.appendChild(b);
+  } else {
+    t.classList.remove('with-action');
+  }
+  t.classList.add('show');
+  toastTimer = setTimeout(()=>t.classList.remove('show','with-action'), action ? 6000 : 1800);
+}
+function haptic(ms){ if(navigator.vibrate) { try{ navigator.vibrate(ms||12); }catch(e){} } }
+function setBtnLoading(btn, on){
+  if(!btn) return;
+  if(on){ btn.classList.add('loading'); btn.disabled = true; }
+  else { btn.classList.remove('loading'); btn.disabled = false; }
+}
+function updateOnlineStatus(){
+  const b = document.getElementById('offline-banner');
+  if(!b) return;
+  if(navigator.onLine) b.classList.remove('show');
+  else b.classList.add('show');
+}
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
 function pad(n){ return n<10 ? '0'+n : ''+n; }
 function toDateStr(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
 function escapeHtml(s){ const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
@@ -353,6 +454,34 @@ async function loadCategories(){
 async function addCategoryRow(c){
   const {error} = await sb.from('categories').insert(c);
   if(error) toast('Не удалось сохранить категорию');
+}
+async function updateCategoryRow(id, patch){
+  const {error} = await sb.from('categories').update(patch).eq('id', id);
+  if(error){ toast('Не удалось переименовать категорию'); return false; }
+  return true;
+}
+async function deleteCategoryRow(id){
+  const {error} = await sb.from('categories').delete().eq('id', id);
+  if(error){ toast('Не удалось удалить категорию'); return false; }
+  return true;
+}
+async function countExpensesByCategory(categoryId){
+  const {count, error} = await sb.from('expenses').select('id', {count:'exact', head:true}).eq('category_id', categoryId);
+  if(error) return null;
+  return count || 0;
+}
+async function loadSettings(){
+  const {data, error} = await sb.from('settings').select('*');
+  if(error) return; // таблица может отсутствовать — бюджет просто не показывается
+  const row = (data||[]).find(r=>r.key==='monthly_budget');
+  state.monthlyBudget = row && row.value ? parseFloat(row.value) : null;
+}
+async function saveMonthlyBudget(value){
+  const payload = {key:'monthly_budget', value: value===null ? null : String(value)};
+  const {error} = await sb.from('settings').upsert(payload, {onConflict:'key'});
+  if(error){ toast('Не удалось сохранить бюджет'); return false; }
+  state.monthlyBudget = value;
+  return true;
 }
 async function insertExpense(exp){
   const {error} = await sb.from('expenses').insert({
@@ -585,12 +714,19 @@ function renderMain(){
       <div class="month-total-box" id="year-total"><b>…</b></div>
     </div>
 
+    <div id="budget-section"></div>
+    <div class="swipe-hint">← свайп для смены месяца →</div>
+
     <div class="cal-pie-layout">
       <div class="calendar-card" id="calendar-card"><div class="loading-note">Загружаем календарь…</div></div>
       <div class="pie-card" id="pie-card"><div class="loading-note">Считаем…</div></div>
     </div>
 
     <div id="tape-section">
+      <div class="tape-toolbar">
+        <input class="search-input" id="search-input" type="search" placeholder="Поиск по заметке или категории…" value="${escapeHtml(state.searchQuery)}">
+        ${state.searchQuery ? '<button class="search-clear" id="search-clear" title="Очистить">✕</button>' : ''}
+      </div>
       <div class="tape" id="tape"><div class="loading-note">Загружаем траты…</div></div>
     </div>
 
@@ -610,8 +746,196 @@ async function refreshData(){
   const monthTotal = state.monthExpenses.reduce((s,e)=>s+e.amount,0);
   const yt = document.getElementById('year-total');
   if(yt) yt.innerHTML = `<b>${fmtMoney(monthTotal)}</b>`;
+  renderBudget(monthTotal);
   renderCalendar();
   renderPieAndTape();
+}
+
+function renderBudget(monthTotal){
+  const el = document.getElementById('budget-section');
+  if(!el) return;
+
+  if(state.monthlyBudget === null || state.monthlyBudget === undefined || isNaN(state.monthlyBudget)){
+    el.innerHTML = `<div class="budget-wrap" id="budget-wrap">
+      <div class="budget-empty">Нажмите, чтобы задать бюджет на месяц</div>
+    </div>`;
+  } else {
+    const budget = state.monthlyBudget;
+    const pct = budget>0 ? (monthTotal/budget)*100 : 0;
+    const cls = pct>100 ? 'over' : (pct>=80 ? 'warn' : 'ok');
+    const left = budget - monthTotal;
+
+    // прогноз: актуален только для текущего месяца
+    const now = new Date();
+    const isCurrentMonth = now.getFullYear()===state.selectedYear && now.getMonth()===state.selectedMonth;
+    const daysInMonth = monthRange(state.selectedYear, state.selectedMonth).end.getDate();
+    let note;
+    if(isCurrentMonth && now.getDate()>1 && monthTotal>0){
+      const projected = (monthTotal/now.getDate())*daysInMonth;
+      const overProjected = projected > budget;
+      note = `<div class="budget-note ${overProjected?'over':''}">При таком темпе за месяц выйдет ≈ ${fmtMoney(projected)}${overProjected?' — выше бюджета':''}</div>`;
+    } else if(left < 0){
+      note = `<div class="budget-note over">Перерасход на ${fmtMoney(Math.abs(left))}</div>`;
+    } else {
+      note = `<div class="budget-note">Осталось ${fmtMoney(left)}</div>`;
+    }
+
+    el.innerHTML = `<div class="budget-wrap" id="budget-wrap">
+      <div class="budget-top">
+        <span class="budget-label">Бюджет месяца</span>
+        <span class="budget-nums">${fmtMoney(monthTotal)} / ${fmtMoney(budget)} · ${Math.round(pct)}%</span>
+      </div>
+      <div class="budget-track"><div class="budget-fill ${cls}" id="budget-fill"></div></div>
+      ${note}
+    </div>`;
+    requestAnimationFrame(()=>{
+      const fill = document.getElementById('budget-fill');
+      if(fill) fill.style.width = Math.min(pct, 100)+'%';
+    });
+  }
+
+  const wrap = document.getElementById('budget-wrap');
+  if(wrap) wrap.addEventListener('click', openBudgetModal);
+}
+
+function openCategoryManager(onClose){
+  const overlay = document.createElement('div'); overlay.className = 'overlay';
+  overlay.innerHTML = `
+    <div class="modal">
+      <h2>Категории</h2>
+      <p style="font-size:12.5px;color:var(--ink-soft);margin:0 0 6px;">Нажмите на название, чтобы переименовать.</p>
+      <div id="cat-manage-list"></div>
+      <div class="cat-add-row">
+        <input type="text" id="new-cat-name" placeholder="Новая категория">
+        <button class="btn btn-primary" id="new-cat-add">Добавить</button>
+      </div>
+      <div class="modal-error" id="cat-manage-error"></div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="cat-manage-close">Готово</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  function renderList(){
+    const list = overlay.querySelector('#cat-manage-list');
+    if(state.categories.length===0){
+      list.innerHTML = '<div style="font-size:13px;color:var(--ink-soft);font-style:italic;padding:8px 0;">Категорий пока нет.</div>';
+      return;
+    }
+    list.innerHTML = state.categories.map(c=>`
+      <div class="cat-manage-row" data-cat-id="${c.id}">
+        <span class="cat-manage-dot" style="background:${resolveColor(c.color)};"></span>
+        <input class="cat-manage-name" type="text" value="${escapeHtml(c.name)}" data-orig="${escapeHtml(c.name)}">
+        <button class="cat-del-btn" title="Удалить">✕</button>
+      </div>`).join('');
+
+    list.querySelectorAll('.cat-manage-row').forEach(row=>{
+      const id = row.getAttribute('data-cat-id');
+      const input = row.querySelector('.cat-manage-name');
+      const commit = async ()=>{
+        const newName = input.value.trim();
+        const orig = input.getAttribute('data-orig');
+        if(!newName){ input.value = orig; return; }
+        if(newName === orig) return;
+        const ok = await updateCategoryRow(id, {name:newName});
+        if(ok){
+          const cat = state.categories.find(c=>c.id===id);
+          if(cat) cat.name = newName;
+          input.setAttribute('data-orig', newName);
+          toast('Категория переименована');
+        } else {
+          input.value = orig;
+        }
+      };
+      input.addEventListener('blur', commit);
+      input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') input.blur(); });
+
+      row.querySelector('.cat-del-btn').addEventListener('click', async ()=>{
+        const cat = state.categories.find(c=>c.id===id);
+        const used = await countExpensesByCategory(id);
+        if(used === null){ toast('Не удалось проверить категорию'); return; }
+        if(used > 0){
+          overlay.querySelector('#cat-manage-error').textContent =
+            `«${cat ? cat.name : ''}» используется в ${used} тратах — сначала измените их категорию.`;
+          return;
+        }
+        if(!confirm(`Удалить категорию «${cat ? cat.name : ''}»?`)) return;
+        const ok = await deleteCategoryRow(id);
+        if(!ok) return;
+        state.categories = state.categories.filter(c=>c.id!==id);
+        overlay.querySelector('#cat-manage-error').textContent = '';
+        toast('Категория удалена');
+        renderList();
+      });
+    });
+  }
+  renderList();
+
+  overlay.querySelector('#new-cat-add').addEventListener('click', async ()=>{
+    const input = overlay.querySelector('#new-cat-name');
+    const name = input.value.trim();
+    if(!name){ input.focus(); return; }
+    const btn = overlay.querySelector('#new-cat-add');
+    setBtnLoading(btn, true);
+    const newCat = {id: uid(), name, color: pickCategoryColor()};
+    await addCategoryRow(newCat);
+    setBtnLoading(btn, false);
+    state.categories.push(newCat);
+    input.value = '';
+    renderList();
+    toast('Категория добавлена');
+  });
+  overlay.querySelector('#new-cat-name').addEventListener('keydown', (e)=>{
+    if(e.key==='Enter') overlay.querySelector('#new-cat-add').click();
+  });
+
+  const close = ()=>{ overlay.remove(); if(onClose) onClose(); };
+  overlay.querySelector('#cat-manage-close').addEventListener('click', close);
+  overlay.addEventListener('click', (e)=>{ if(e.target===overlay) close(); });
+}
+
+function openBudgetModal(){
+  const overlay = document.createElement('div'); overlay.className = 'overlay';
+  const cur = (state.monthlyBudget===null || state.monthlyBudget===undefined || isNaN(state.monthlyBudget)) ? '' : state.monthlyBudget;
+  overlay.innerHTML = `
+    <div class="modal" style="max-width:380px;">
+      <h2>Бюджет на месяц</h2>
+      <p style="font-size:13px;color:var(--ink-soft);margin:0 0 4px;">Общий лимит трат для всей семьи. Применяется ко всем месяцам.</p>
+      <label>Сумма</label>
+      <input class="amount-input" id="budget-amount" type="number" inputmode="decimal" placeholder="0" min="0" step="100" value="${cur}">
+      <div class="modal-error" id="budget-error"></div>
+      <div class="modal-actions">
+        ${cur!=='' ? '<button class="btn btn-secondary" id="budget-clear">Убрать</button>' : ''}
+        <button class="btn btn-secondary" id="budget-cancel">Отмена</button>
+        <button class="btn btn-primary" id="budget-save">Сохранить</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', (e)=>{ if(e.target===overlay) overlay.remove(); });
+  overlay.querySelector('#budget-cancel').addEventListener('click', ()=> overlay.remove());
+
+  const clearBtn = overlay.querySelector('#budget-clear');
+  if(clearBtn) clearBtn.addEventListener('click', async ()=>{
+    setBtnLoading(clearBtn, true);
+    const ok = await saveMonthlyBudget(null);
+    setBtnLoading(clearBtn, false);
+    if(!ok) return;
+    overlay.remove(); toast('Бюджет убран'); refreshData();
+  });
+
+  overlay.querySelector('#budget-save').addEventListener('click', async ()=>{
+    const btn = overlay.querySelector('#budget-save');
+    const val = parseFloat(overlay.querySelector('#budget-amount').value);
+    const err = overlay.querySelector('#budget-error');
+    if(!val || val<=0){ err.textContent = 'Укажите сумму больше нуля.'; return; }
+    setBtnLoading(btn, true);
+    const ok = await saveMonthlyBudget(val);
+    setBtnLoading(btn, false);
+    if(!ok) return;
+    haptic();
+    overlay.remove(); toast('Бюджет сохранён'); refreshData();
+  });
+  setTimeout(()=> overlay.querySelector('#budget-amount').focus(), 50);
 }
 
 function renderCalendar(){
@@ -712,9 +1036,27 @@ function renderPie(expenses){
   `;
 }
 
-function renderTape(expenses){
+function applySearch(expenses){
+  const q = (state.searchQuery||'').trim().toLowerCase();
+  if(!q) return expenses;
+  return expenses.filter(e=>{
+    const cat = categoryById(e.categoryId);
+    const m = memberById(e.memberId);
+    return (cat.name||'').toLowerCase().includes(q)
+      || (e.note||'').toLowerCase().includes(q)
+      || (m && (m.name||'').toLowerCase().includes(q))
+      || String(Math.round(e.amount)).includes(q);
+  });
+}
+
+function renderTape(allExpenses){
   const el = document.getElementById('tape');
   if(!el) return;
+
+  const expenses = applySearch(allExpenses);
+  const searchInfo = (state.searchQuery||'').trim()
+    ? `<div class="search-count">Найдено: ${expenses.length} · на сумму ${fmtMoney(expenses.reduce((s,e)=>s+e.amount,0))}</div>`
+    : '';
 
   const dayTotal = state.selectedDay ? expenses.reduce((s,e)=>s+e.amount,0) : 0;
   const header = state.selectedDay ? `
@@ -727,19 +1069,22 @@ function renderTape(expenses){
     </div>` : '';
 
   if(expenses.length===0){
-    el.innerHTML = header + '<div class="empty-tape">Трат здесь ещё нет.<br>Нажмите «+», чтобы записать первую.</div>';
+    const emptyMsg = (state.searchQuery||'').trim()
+      ? 'Ничего не найдено по этому запросу.'
+      : 'Трат здесь ещё нет.<br>Нажмите «+», чтобы записать первую.';
+    el.innerHTML = header + searchInfo + `<div class="empty-tape">${emptyMsg}</div>`;
     attachBackButton();
     return;
   }
 
   if(state.selectedDay){
     const items = expenses.slice().sort((a,b)=>b.createdAt-a.createdAt);
-    el.innerHTML = header + renderReceiptList(items);
+    el.innerHTML = header + searchInfo + renderReceiptList(items);
   } else {
     const byDay = {};
     expenses.forEach(e=>{ (byDay[e.date] = byDay[e.date]||[]).push(e); });
     const days = Object.keys(byDay).sort().reverse();
-    el.innerHTML = header + days.map(date=>{
+    el.innerHTML = header + searchInfo + days.map(date=>{
       const items = byDay[date].sort((a,b)=>b.createdAt-a.createdAt);
       const groupTotal = items.reduce((s,e)=>s+e.amount,0);
       return `<div class="day-group"><div class="day-label"><span>${formatDateLong(date)}</span><span class="day-total-amt">${fmtMoney(groupTotal)}</span></div>${renderReceiptList(items)}</div>`;
@@ -779,22 +1124,87 @@ function formatDateLong(dateStr){
   return d.getDate()+' '+MONTHS_GENITIVE[d.getMonth()]+', '+WEEKDAYS[d.getDay()];
 }
 
+function shiftMonth(delta){
+  state.selectedMonth += delta;
+  while(state.selectedMonth < 0){ state.selectedMonth += 12; state.selectedYear -= 1; }
+  while(state.selectedMonth > 11){ state.selectedMonth -= 12; state.selectedYear += 1; }
+  state.selectedDay = null;
+  haptic();
+  renderApp();
+}
+
 function attachMainEvents(){
   attachTopbarEvents();
-  document.getElementById('prev-year').addEventListener('click', ()=>{ state.selectedYear -= 1; state.selectedDay = null; renderApp(); });
-  document.getElementById('next-year').addEventListener('click', ()=>{ state.selectedYear += 1; state.selectedDay = null; renderApp(); });
-  document.getElementById('prev-month').addEventListener('click', ()=>{
-    state.selectedMonth -= 1;
-    if(state.selectedMonth < 0){ state.selectedMonth = 11; state.selectedYear -= 1; }
-    state.selectedDay = null; renderApp();
-  });
-  document.getElementById('next-month').addEventListener('click', ()=>{
-    state.selectedMonth += 1;
-    if(state.selectedMonth > 11){ state.selectedMonth = 0; state.selectedYear += 1; }
-    state.selectedDay = null; renderApp();
-  });
-  document.getElementById('fab-add').addEventListener('click', openAddExpense);
+  document.getElementById('prev-year').addEventListener('click', ()=>{ state.selectedYear -= 1; state.selectedDay = null; haptic(); renderApp(); });
+  document.getElementById('next-year').addEventListener('click', ()=>{ state.selectedYear += 1; state.selectedDay = null; haptic(); renderApp(); });
+  document.getElementById('prev-month').addEventListener('click', ()=> shiftMonth(-1));
+  document.getElementById('next-month').addEventListener('click', ()=> shiftMonth(1));
+  document.getElementById('fab-add').addEventListener('click', ()=>{ haptic(); openAddExpense(); });
+
+  // Поиск по тратам
+  const search = document.getElementById('search-input');
+  if(search){
+    let searchTimer = null;
+    search.addEventListener('input', (e)=>{
+      state.searchQuery = e.target.value;
+      if(searchTimer) clearTimeout(searchTimer);
+      searchTimer = setTimeout(()=>{
+        renderPieAndTape();
+        const clear = document.getElementById('search-clear');
+        const toolbar = document.querySelector('.tape-toolbar');
+        if(state.searchQuery && !clear && toolbar){
+          const btn = document.createElement('button');
+          btn.className = 'search-clear'; btn.id = 'search-clear'; btn.textContent = '✕';
+          btn.addEventListener('click', clearSearch);
+          toolbar.appendChild(btn);
+        } else if(!state.searchQuery && clear){
+          clear.remove();
+        }
+      }, 180);
+    });
+  }
+  const clearBtn = document.getElementById('search-clear');
+  if(clearBtn) clearBtn.addEventListener('click', clearSearch);
+
+  attachSwipeNavigation();
 }
+
+function clearSearch(){
+  state.searchQuery = '';
+  const input = document.getElementById('search-input');
+  if(input) input.value = '';
+  const clear = document.getElementById('search-clear');
+  if(clear) clear.remove();
+  renderPieAndTape();
+}
+
+let swipeAttached = false;
+function attachSwipeNavigation(){
+  const app = document.getElementById('app');
+  if(!app || swipeAttached) return;
+  swipeAttached = true;
+  let startX = 0, startY = 0, tracking = false;
+  app.addEventListener('touchstart', (e)=>{
+    if(e.touches.length !== 1) { tracking = false; return; }
+    const t = e.touches[0];
+    // не перехватываем свайпы внутри полей ввода и горизонтально прокручиваемых блоков
+    if(e.target.closest('input, textarea, .overlay, .chip-grid')) { tracking = false; return; }
+    startX = t.clientX; startY = t.clientY; tracking = true;
+  }, {passive:true});
+  app.addEventListener('touchend', (e)=>{
+    if(!tracking) return;
+    tracking = false;
+    if(state.currentPage !== 'home') return;      // свайп работает только в «Кассе»
+    if(document.querySelector('.overlay')) return; // не мешаем открытым окнам
+    const t = e.changedTouches[0];
+    const dx = t.clientX - startX, dy = t.clientY - startY;
+    if(Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy)*1.8){
+      shiftMonth(dx < 0 ? 1 : -1);
+    }
+  }, {passive:true});
+}
+
+const QUICK_AMOUNTS = [100, 300, 500, 1000, 2000, 5000];
 
 function openAddExpense(){
   let selectedCategory = state.categories[0] ? state.categories[0].id : null;
@@ -804,11 +1214,11 @@ function openAddExpense(){
       <h2>Новая трата</h2>
       <label>Сумма</label>
       <input class="amount-input" id="exp-amount" type="number" inputmode="decimal" placeholder="0" min="0" step="0.01">
-      <label>Категория</label>
-      <div class="chip-grid" id="cat-chips">
-        ${state.categories.map(c=>`<div class="chip ${c.id===selectedCategory?'selected':''}" data-cat="${c.id}"><span class="chip-dot" style="background:${resolveColor(c.color)};"></span>${c.name}</div>`).join('')}
-        <div class="chip add-cat-chip" id="add-cat-chip">+ своя категория</div>
+      <div class="quick-amounts" id="quick-amounts">
+        ${QUICK_AMOUNTS.map(a=>`<button type="button" class="quick-amt" data-amt="${a}">+${a.toLocaleString('ru-RU')}</button>`).join('')}
       </div>
+      <div class="label-row"><label>Категория</label><button type="button" class="manage-cats-link" id="manage-cats-link">управлять</button></div>
+      <div class="chip-grid" id="cat-chips"></div>
       <label>Кто платил</label>
       <div class="chip-grid" id="member-chips">
         ${state.members.map(m=>`<div class="chip ${m.id===state.myMemberId?'selected':''}" data-mem="${m.id}">${avatarHtml(m,16,8)}${escapeHtml(m.name)}</div>`).join('')}
@@ -825,49 +1235,70 @@ function openAddExpense(){
     </div>`;
   document.body.appendChild(overlay);
   let selectedMember = state.myMemberId;
+  let saving = false;
 
-  function rebindCatChips(){
-    overlay.querySelectorAll('#cat-chips .chip[data-cat]').forEach(chip=>{
+  function renderCatChips(){
+    const box = overlay.querySelector('#cat-chips');
+    if(state.categories.length && !state.categories.some(c=>c.id===selectedCategory)){
+      selectedCategory = state.categories[0].id;
+    }
+    box.innerHTML = state.categories.map(c=>
+      `<div class="chip ${c.id===selectedCategory?'selected':''}" data-cat="${c.id}"><span class="chip-dot" style="background:${resolveColor(c.color)};"></span>${escapeHtml(c.name)}</div>`
+    ).join('');
+    box.querySelectorAll('.chip[data-cat]').forEach(chip=>{
       chip.addEventListener('click', ()=>{
-        overlay.querySelectorAll('#cat-chips .chip').forEach(c=>c.classList.remove('selected'));
+        box.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
         chip.classList.add('selected'); selectedCategory = chip.getAttribute('data-cat');
+        haptic(8);
       });
     });
   }
-  rebindCatChips();
+  renderCatChips();
+
+  const amountInput = overlay.querySelector('#exp-amount');
+  overlay.querySelectorAll('.quick-amt').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const add = parseFloat(b.getAttribute('data-amt'));
+      const cur = parseFloat(amountInput.value) || 0;
+      amountInput.value = cur + add;
+      haptic(8);
+    });
+  });
+
+  overlay.querySelector('#manage-cats-link').addEventListener('click', ()=>{
+    openCategoryManager(()=> renderCatChips());
+  });
+
   overlay.querySelectorAll('#member-chips .chip').forEach(chip=>{
     chip.addEventListener('click', ()=>{
       overlay.querySelectorAll('#member-chips .chip').forEach(c=>c.classList.remove('selected'));
       chip.classList.add('selected'); selectedMember = chip.getAttribute('data-mem');
+      haptic(8);
     });
   });
-  overlay.querySelector('#add-cat-chip').addEventListener('click', async ()=>{
-    const name = prompt('Название новой категории:');
-    if(!name || !name.trim()) return;
-    const color = pickCategoryColor();
-    const newCat = {id: uid(), name: name.trim(), color};
-    await addCategoryRow(newCat);
-    state.categories.push(newCat);
-    selectedCategory = newCat.id;
-    overlay.querySelector('#cat-chips').innerHTML =
-      state.categories.map(c=>`<div class="chip ${c.id===selectedCategory?'selected':''}" data-cat="${c.id}"><span class="chip-dot" style="background:${resolveColor(c.color)};"></span>${c.name}</div>`).join('')
-      + '<div class="chip add-cat-chip" id="add-cat-chip">+ своя категория</div>';
-    rebindCatChips();
-    overlay.querySelector('#add-cat-chip').replaceWith(overlay.querySelector('#add-cat-chip').cloneNode(true));
-  });
+
   overlay.querySelector('#exp-cancel').addEventListener('click', ()=> overlay.remove());
-  overlay.addEventListener('click', (e)=>{ if(e.target===overlay) overlay.remove(); });
+  overlay.addEventListener('click', (e)=>{ if(e.target===overlay && !saving) overlay.remove(); });
+
   overlay.querySelector('#exp-save').addEventListener('click', async ()=>{
-    const amountVal = parseFloat(overlay.querySelector('#exp-amount').value);
+    if(saving) return;
+    const btn = overlay.querySelector('#exp-save');
+    const amountVal = parseFloat(amountInput.value);
     const dateVal = overlay.querySelector('#exp-date').value;
     const noteVal = overlay.querySelector('#exp-note').value.trim();
     const errEl = overlay.querySelector('#exp-error');
     if(!amountVal || amountVal<=0){ errEl.textContent = 'Укажите сумму больше нуля.'; return; }
+    if(!selectedCategory){ errEl.textContent = 'Выберите категорию.'; return; }
     if(!selectedMember){ errEl.textContent = 'Выберите, кто платил.'; return; }
     if(!dateVal){ errEl.textContent = 'Укажите дату.'; return; }
+    if(!navigator.onLine){ errEl.textContent = 'Нет соединения — трата не сохранится.'; return; }
+
+    saving = true; setBtnLoading(btn, true); errEl.textContent = '';
     const exp = {id: uid(), amount: amountVal, categoryId: selectedCategory, memberId: selectedMember, note: noteVal, date: dateVal, createdAt: Date.now()};
     const ok = await insertExpense(exp);
+    saving = false; setBtnLoading(btn, false);
     if(!ok) return;
+    haptic();
     overlay.remove(); toast('Трата записана');
     const expDate = new Date(dateVal+'T00:00:00');
     if(expDate.getFullYear() !== state.selectedYear || expDate.getMonth() !== state.selectedMonth){
@@ -879,7 +1310,7 @@ function openAddExpense(){
       refreshData();
     }
   });
-  setTimeout(()=> overlay.querySelector('#exp-amount').focus(), 50);
+  setTimeout(()=> amountInput.focus(), 50);
 }
 
 function openEditProfile(){
@@ -1002,11 +1433,8 @@ function openEditExpense(exp){
       <h2>Изменить трату</h2>
       <label>Сумма</label>
       <input class="amount-input" id="exp-amount" type="number" inputmode="decimal" placeholder="0" min="0" step="0.01" value="${exp.amount}">
-      <label>Категория</label>
-      <div class="chip-grid" id="cat-chips">
-        ${state.categories.map(c=>`<div class="chip ${c.id===selectedCategory?'selected':''}" data-cat="${c.id}"><span class="chip-dot" style="background:${resolveColor(c.color)};"></span>${c.name}</div>`).join('')}
-        <div class="chip add-cat-chip" id="add-cat-chip">+ своя категория</div>
-      </div>
+      <div class="label-row"><label>Категория</label><button type="button" class="manage-cats-link" id="manage-cats-link">управлять</button></div>
+      <div class="chip-grid" id="cat-chips"></div>
       <label>Кто платил</label>
       <div class="chip-grid" id="member-chips">
         ${state.members.map(m=>`<div class="chip ${m.id===selectedMember?'selected':''}" data-mem="${m.id}">${avatarHtml(m,16,8)}${escapeHtml(m.name)}</div>`).join('')}
@@ -1024,34 +1452,31 @@ function openEditExpense(exp){
     </div>`;
   document.body.appendChild(overlay);
 
-  function rebindCatChips(){
-    overlay.querySelectorAll('#cat-chips .chip[data-cat]').forEach(chip=>{
+  function renderCatChips(){
+    const box = overlay.querySelector('#cat-chips');
+    box.innerHTML = state.categories.map(c=>
+      `<div class="chip ${c.id===selectedCategory?'selected':''}" data-cat="${c.id}"><span class="chip-dot" style="background:${resolveColor(c.color)};"></span>${escapeHtml(c.name)}</div>`
+    ).join('');
+    box.querySelectorAll('.chip[data-cat]').forEach(chip=>{
       chip.addEventListener('click', ()=>{
-        overlay.querySelectorAll('#cat-chips .chip').forEach(c=>c.classList.remove('selected'));
+        box.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
         chip.classList.add('selected'); selectedCategory = chip.getAttribute('data-cat');
+        haptic(8);
       });
     });
   }
-  rebindCatChips();
+  renderCatChips();
+
+  overlay.querySelector('#manage-cats-link').addEventListener('click', ()=>{
+    openCategoryManager(()=> renderCatChips());
+  });
+
   overlay.querySelectorAll('#member-chips .chip').forEach(chip=>{
     chip.addEventListener('click', ()=>{
       overlay.querySelectorAll('#member-chips .chip').forEach(c=>c.classList.remove('selected'));
       chip.classList.add('selected'); selectedMember = chip.getAttribute('data-mem');
+      haptic(8);
     });
-  });
-  overlay.querySelector('#add-cat-chip').addEventListener('click', async ()=>{
-    const name = prompt('Название новой категории:');
-    if(!name || !name.trim()) return;
-    const color = pickCategoryColor();
-    const newCat = {id: uid(), name: name.trim(), color};
-    await addCategoryRow(newCat);
-    state.categories.push(newCat);
-    selectedCategory = newCat.id;
-    overlay.querySelector('#cat-chips').innerHTML =
-      state.categories.map(c=>`<div class="chip ${c.id===selectedCategory?'selected':''}" data-cat="${c.id}"><span class="chip-dot" style="background:${resolveColor(c.color)};"></span>${c.name}</div>`).join('')
-      + '<div class="chip add-cat-chip" id="add-cat-chip">+ своя категория</div>';
-    rebindCatChips();
-    overlay.querySelector('#add-cat-chip').replaceWith(overlay.querySelector('#add-cat-chip').cloneNode(true));
   });
 
   overlay.querySelector('#exp-cancel').addEventListener('click', ()=> overlay.remove());
@@ -1062,7 +1487,10 @@ function openEditExpense(exp){
     openDeleteConfirm(exp);
   });
 
+  let savingEdit = false;
   overlay.querySelector('#exp-save').addEventListener('click', async ()=>{
+    if(savingEdit) return;
+    const btn = overlay.querySelector('#exp-save');
     const amountVal = parseFloat(overlay.querySelector('#exp-amount').value);
     const dateVal = overlay.querySelector('#exp-date').value;
     const noteVal = overlay.querySelector('#exp-note').value.trim();
@@ -1070,9 +1498,13 @@ function openEditExpense(exp){
     if(!amountVal || amountVal<=0){ errEl.textContent = 'Укажите сумму больше нуля.'; return; }
     if(!selectedMember){ errEl.textContent = 'Выберите, кто платил.'; return; }
     if(!dateVal){ errEl.textContent = 'Укажите дату.'; return; }
+    if(!navigator.onLine){ errEl.textContent = 'Нет соединения — изменения не сохранятся.'; return; }
+    savingEdit = true; setBtnLoading(btn, true); errEl.textContent = '';
     const patch = {amount: amountVal, categoryId: selectedCategory, memberId: selectedMember, note: noteVal, date: dateVal};
     const ok = await updateExpenseRow(exp.id, patch);
+    savingEdit = false; setBtnLoading(btn, false);
     if(!ok) return;
+    haptic();
     overlay.remove(); toast('Трата обновлена');
     const expDate = new Date(dateVal+'T00:00:00');
     if(expDate.getFullYear() !== state.selectedYear || expDate.getMonth() !== state.selectedMonth){
@@ -1345,15 +1777,29 @@ function openDeleteConfirm(exp){
   overlay.addEventListener('click', (e)=>{ if(e.target===overlay) overlay.remove(); });
   overlay.querySelector('#del-cancel').addEventListener('click', ()=> overlay.remove());
   overlay.querySelector('#del-confirm').addEventListener('click', async ()=>{
+    const btn = overlay.querySelector('#del-confirm');
+    setBtnLoading(btn, true);
+    const snapshot = Object.assign({}, exp); // копия для возможной отмены
     await deleteExpenseRow(exp.id);
-    overlay.remove(); toast('Трата удалена'); refreshData();
+    setBtnLoading(btn, false);
+    overlay.remove();
+    haptic();
+    refreshData();
+    toast('Трата удалена', {
+      label: 'Вернуть',
+      onClick: async ()=>{
+        const ok = await insertExpense(snapshot);
+        if(ok){ toast('Трата восстановлена'); refreshData(); }
+      }
+    });
   });
 }
 
 async function init(){
   if(!sb){ renderApp(); return; }
-  await Promise.all([loadMembers(), loadCategories()]);
+  await Promise.all([loadMembers(), loadCategories(), loadSettings()]);
   loadMyMemberId();
+  updateOnlineStatus();
   renderApp();
   sb.channel('expenses-changes')
     .on('postgres_changes', {event:'*', schema:'public', table:'expenses'}, ()=>{ if(state.myMemberId) refreshData(); })
