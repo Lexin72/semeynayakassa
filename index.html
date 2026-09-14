@@ -6,7 +6,7 @@
 <title>Семейная касса</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=cQizR4LqYipBa7wHOdBJIwv_bHQ6hCJt6O3CZarsj7PaCgUBxly8EbwG_LI9f86UB-kHmibvehZ1OUDOtFnVPN2IqhiNTkG9tSRtj2SNj0FJsP237vrfKcGo2nmhylDx5EjX3WcPDOxZMmKGwGMcGNIyKmo7SwnpJgSUPiwul2P6jzw9b2A6KpZpNQDHuNzbw31pP5-feYjph2jfZAlODV1CMwflM8jjV95UQCnD6lQROhQVtlREw7U5Nshnm4_hoeOagoDcB2bDNdPCg6Bepg" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=AsgxjTB4bo6RQl9RJ1yFslQiEKujR8v1DiASU4PotkwHy14Qv3gTq1yX0rKV-sbD_XUqojHIwkMHUW1oow8l98KLL22eK-bihcfYQFSaJaWBNZXRr7BdIMCruyDdDdWMUO1eEXBfikL45crwpa3PUlwWWNk3PksQHxZ1iCu360utrqf7fx4iEDnkvibL5MoirnWOudVX1RFDt8gE99XVMTifnsM3qTBOmdY5j46nMthXIGqvF2iL2X34kFyNjAgvf5e8XNKC20sXEDXT7EQL-7f09Sn-_EByyiwy9Niq0e-cVHWbgefwrakdWKkt-FTG" charset="UTF-8"></script><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=DyigsA7-NoMH7Swnww9tytalw4vMMYzecknN6fAdFGfnfyFxBhlE99_kkke_WRHapuOew8-VQjMbmXJOpzIVvMmOsEx_Xzg5K-qQYHmpInTNGStG9U77JEqVvhDIQrkd8lW9sjMVHzSsaUEQp_LwQXW60XARRz6SBvoN2-nPO_AASt-BQm79znHQ-18vChPfJGOLDn8ODgJx-2jIahAXeUdb4qW56ROFVVZNOud0XAZS9UKYI1bTU1zqBX9D55vL9P6PTG3FYheGidkmDX_qDWaEGTlH6LpkqBQcQ-O6qU4QXx2_iCflZQi1JokLTWaE" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#9CB5AD">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -636,14 +636,16 @@
   .style-dot{width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:var(--ink-soft);}
   .style-dot.gold{background:linear-gradient(135deg,#8D5B16,#E3BD63);}.style-dot.blue{background:linear-gradient(135deg,#355E91,#88B4D7);}.style-dot.red{background:linear-gradient(135deg,#8E332E,#D77A65);}.style-dot.teal{background:linear-gradient(135deg,#386D69,#85B8AD);}.style-dot.silver{background:linear-gradient(135deg,#72777E,#D8D9D7);}.style-dot.none{background:#9F9385;}
   @keyframes shimmer-flow{
-    0%{background-position:115% 50%;}
-    100%{background-position:-115% 50%;}
+    0%{background-position:0% 50%;}
+    100%{background-position:200% 50%;}
   }
   .name-shimmer{
     display:inline-block;
     max-width:100%;
-    background-size:240% 100%;
-    background-repeat:no-repeat;
+    /* Shift by exactly one repeated tile: the first and last frames match. */
+    background-color:var(--brown);
+    background-size:200% 100%;
+    background-repeat:repeat-x;
     -webkit-background-clip:text;
     background-clip:text;
     -webkit-text-fill-color:transparent;
@@ -653,12 +655,12 @@
     filter:drop-shadow(0 1px 0 rgba(255,255,255,.08));
     will-change:background-position;
   }
-  .shimmer-warm,.shimmer-gold{background-image:linear-gradient(105deg,#6a3508 0%,#9a5b1f 24%,#f0d89a 43%,#fff0bc 49%,#c68d3d 57%,#7a3d0a 78%,#6a3508 100%);}
-  .shimmer-blue{background-image:linear-gradient(105deg,#31577f 0%,#6f9ec5 28%,#d9edf6 48%,#8fc4dd 57%,#355E91 78%,#31577f 100%);}
-  .shimmer-red{background-image:linear-gradient(105deg,#7a2c28 0%,#b84c40 28%,#f3c0a9 48%,#dc806b 58%,#8E332E 79%,#7a2c28 100%);}
-  .shimmer-teal{background-image:linear-gradient(105deg,#2f615d 0%,#5c9a90 28%,#d2eee7 48%,#88c4b6 58%,#386D69 79%,#2f615d 100%);}
-  .shimmer-silver{background-image:linear-gradient(105deg,#555d64 0%,#8d949a 28%,#f7f7f2 48%,#c8ccce 58%,#656b73 79%,#555d64 100%);}
-  .member-chip.active .name-shimmer{background-image:linear-gradient(105deg,#f7e5b5 0%,#fffaf0 34%,#d9ae67 49%,#fffdf6 60%,#f4dfad 78%,#f7e5b5 100%);}
+  .shimmer-warm,.shimmer-gold{background-image:linear-gradient(90deg,#6a3508 0%,#6a3508 12%,#9a5b1f 24%,#f0d89a 43%,#fff0bc 49%,#c68d3d 57%,#7a3d0a 78%,#6a3508 88%,#6a3508 100%);}
+  .shimmer-blue{background-image:linear-gradient(90deg,#31577f 0%,#31577f 12%,#6f9ec5 28%,#d9edf6 48%,#8fc4dd 57%,#355E91 78%,#31577f 88%,#31577f 100%);}
+  .shimmer-red{background-image:linear-gradient(90deg,#7a2c28 0%,#7a2c28 12%,#b84c40 28%,#f3c0a9 48%,#dc806b 58%,#8E332E 79%,#7a2c28 88%,#7a2c28 100%);}
+  .shimmer-teal{background-image:linear-gradient(90deg,#2f615d 0%,#2f615d 12%,#5c9a90 28%,#d2eee7 48%,#88c4b6 58%,#386D69 79%,#2f615d 88%,#2f615d 100%);}
+  .shimmer-silver{background-image:linear-gradient(90deg,#555d64 0%,#555d64 12%,#8d949a 28%,#f7f7f2 48%,#c8ccce 58%,#656b73 79%,#555d64 88%,#555d64 100%);}
+  .member-chip.active .name-shimmer{background-image:linear-gradient(90deg,#f7e5b5 0%,#f7e5b5 12%,#fffaf0 34%,#d9ae67 49%,#fffdf6 60%,#f4dfad 78%,#f7e5b5 88%,#f7e5b5 100%);}
   .member-chip .name-shimmer{white-space:nowrap;}
   .receipt-member .name-shimmer{white-space:normal;overflow-wrap:anywhere;}
 
@@ -762,6 +764,11 @@
 
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
+    /* Keep the requested decorative effects on desktop and mobile alike. */
+    .name-shimmer{animation-duration:3.2s!important;animation-iteration-count:infinite!important;}
+    .oil-puddle{animation-duration:9s,5.5s!important;animation-iteration-count:infinite!important;}
+    .oil-puddle::before{animation-duration:7.5s,24s!important;animation-iteration-count:infinite!important;}
+    .oil-puddle::after{animation-duration:6.8s!important;animation-iteration-count:infinite!important;}
   }
 </style>
 
