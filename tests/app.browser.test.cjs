@@ -74,6 +74,9 @@ async function setup(t, options = {}){
     if(!url.pathname.startsWith('/rest/v1/')) return route.abort();
     if(request.method() === 'OPTIONS') return route.fulfill({status:204,headers:cors});
     calls.push({url, method:request.method()});
+    // Fulfilled mock routes bypass browser networking, including setOffline.
+    // Explicitly fail API routes in the offline phase as a real network would.
+    if(config.mode === 'offline') return route.abort('internetdisconnected');
     if(config.mode === 'hang') await gate;
     if(config.mode === 'fail' || (config.failWrites && request.method() !== 'GET' && request.method() !== 'HEAD')){
       return route.fulfill({status:503,headers:cors,contentType:'application/json',body:JSON.stringify({message:'Unavailable'})}).catch(()=>{});
@@ -205,7 +208,7 @@ test('app stays usable when browser localStorage is unavailable', async t => {
 });
 
 test('service worker opens instantly with hanging hosting and offline, caches only app assets', async t => {
-  const {page,context} = await setup(t,{serviceWorkers:true});
+  const {page,context,config} = await setup(t,{serviceWorkers:true});
   await page.goto(origin+basePath+'setup.html');
   await page.evaluate(async () => {
     await caches.open('semeynaya-kassa-v1');
@@ -232,9 +235,10 @@ test('service worker opens instantly with hanging hosting and offline, caches on
     slowStatic = false;
     pendingStatic.forEach(res => res.destroy());
   }
+  config.mode = 'offline';
   await context.setOffline(true);
   await page.reload({waitUntil:'domcontentloaded',timeout:2500});
   await page.waitForSelector('.receipt',{timeout:1500});
   assert.match(await page.locator('#top5-list').innerText(), /200/);
-  assert.equal(await page.locator('#offline-banner.show').count(),1);
+  await page.waitForSelector('#offline-banner.show',{timeout:1500});
 });
