@@ -779,7 +779,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
 /* ============================================================
    НАСТРОЙКА: данные вашего проекта Supabase
    ============================================================ */
@@ -796,10 +796,12 @@ let referencesLoading = false;
 let referencesRequest = null;
 
 function readCache(key){
+  if(window.FamilyCashNative) return null;
   try { return JSON.parse(localStorage.getItem(CACHE_PREFIX + key)); }
   catch { return null; }
 }
 function writeCache(key, value){
+  if(window.FamilyCashNative) return;
   try { localStorage.setItem(CACHE_PREFIX + key, JSON.stringify(value)); }
   catch { /* Private mode and a full storage must not prevent opening the app. */ }
 }
@@ -907,6 +909,11 @@ function setBtnLoading(btn, on){
 function updateOnlineStatus(){
   const b = document.getElementById('offline-banner');
   if(!b) return;
+  if(window.FamilyCashNative){
+    // The Android status strip reports durable local writes and queued sync.
+    b.classList.remove('show');
+    return;
+  }
   const unavailable = !navigator.onLine || connectionFailures.size > 0;
   document.getElementById('connection-message').textContent = navigator.onLine
     ? 'Нет связи с базой. Доступны только ранее загруженные данные.'
@@ -1208,7 +1215,7 @@ function renderApp(){
     return;
   }
   if(!state.myMemberId && !membersLoaded){
-    app.innerHTML = referencesLoading
+    app.innerHTML = (referencesLoading || window.FamilyCashNative?.status()?.syncing)
       ? '<div class="loading-note">Загружаем участников семьи…</div>'
       : '<div class="setup-box"><h2>База недоступна</h2><p>Не удалось загрузить участников семьи. Проверьте соединение и попробуйте ещё раз.</p><button class="btn btn-primary" id="retry-startup">Повторить</button></div>';
     document.getElementById('retry-startup')?.addEventListener('click', retryConnection);
@@ -2018,7 +2025,7 @@ function openAddExpense(){
     if(!selectedCategory){ errEl.textContent = 'Выберите категорию.'; return; }
     if(!selectedMember){ errEl.textContent = 'Выберите, кто платил.'; return; }
     if(!dateVal){ errEl.textContent = 'Укажите дату.'; return; }
-    if(!navigator.onLine){ errEl.textContent = 'Нет соединения — трата не сохранится.'; return; }
+    if(!navigator.onLine && !window.FamilyCashNative){ errEl.textContent = 'Нет соединения — трата не сохранится.'; return; }
 
     saving = true; setBtnLoading(btn, true); errEl.textContent = '';
     const exp = {id: uid(), amount: amountVal, categoryId: selectedCategory, memberId: selectedMember, note: noteVal, date: dateVal, createdAt: Date.now()};
@@ -2227,7 +2234,7 @@ function openEditExpense(exp){
     if(!amountVal || amountVal<=0){ errEl.textContent = 'Укажите сумму больше нуля.'; return; }
     if(!selectedMember){ errEl.textContent = 'Выберите, кто платил.'; return; }
     if(!dateVal){ errEl.textContent = 'Укажите дату.'; return; }
-    if(!navigator.onLine){ errEl.textContent = 'Нет соединения — изменения не сохранятся.'; return; }
+    if(!navigator.onLine && !window.FamilyCashNative){ errEl.textContent = 'Нет соединения — изменения не сохранятся.'; return; }
     savingEdit = true; setBtnLoading(btn, true); errEl.textContent = '';
     const patch = {amount: amountVal, categoryId: selectedCategory, memberId: selectedMember, note: noteVal, date: dateVal};
     const ok = await updateExpenseRow(exp.id, patch);
@@ -2563,6 +2570,7 @@ function syncReferences(){
 
 function retryConnection(){
   if(!sb) return;
+  if(window.FamilyCashNative){ window.FamilyCashNative.sync(); return; }
   syncReferences();
   if(state.myMemberId){
     if(state.currentPage === 'analytics') loadAnalyticsData(true);
@@ -2583,6 +2591,17 @@ function init(){
   document.getElementById('retry-connection').addEventListener('click', retryConnection);
   if(!sb) return;
   syncReferences();
+  if(window.FamilyCashNative){
+    window.addEventListener('family-cash:status', () => {
+      if(!membersLoaded && !state.myMemberId) renderApp();
+    });
+    window.addEventListener('family-cash:data', () => {
+      invalidateExpenses();
+      syncReferences();
+    });
+    window.FamilyCashNative.start();
+    return;
+  }
   sb.channel('expenses-changes')
     .on('postgres_changes', {event:'*', schema:'public', table:'expenses'}, () => {
       invalidateExpenses();
@@ -2593,9 +2612,16 @@ function init(){
     })
     .subscribe();
 }
+if(window.FamilyCashNative && sb){
+  try { sb = await window.FamilyCashNative.createClient(sb); }
+  catch {
+    document.getElementById('app').innerHTML = '<div class="setup-box"><h2>Не удалось открыть базу на телефоне</h2><p>Закройте и снова откройте приложение. Не удаляйте его и не очищайте данные: на телефоне могут оставаться неотправленные расходы.</p></div>';
+    return;
+  }
+}
 init();
 
-if('serviceWorker' in navigator){
+if(!window.FamilyCashNative && 'serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
 });

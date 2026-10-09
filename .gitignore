@@ -1,2 +1,7 @@
 node_modules/
 test-results/
+www/
+*.keystore
+*.jks
+*.apk
+*.aab

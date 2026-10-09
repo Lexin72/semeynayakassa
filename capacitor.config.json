@@ -1,0 +1,7 @@
+{
+  "appId": "ru.lexin72.semeynayakassa",
+  "appName": "Семейная касса",
+  "webDir": "www",
+  "android": { "backgroundColor": "#96B8B8", "allowMixedContent": false, "minWebViewVersion": 100 },
+  "server": { "androidScheme": "https", "errorPath": "webview-error.html" }
+}
