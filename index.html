@@ -6,9 +6,9 @@
 <title>Семейная касса</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=AsgxjTB4bo6RQl9RJ1yFslQiEKujR8v1DiASU4PotkwHy14Qv3gTq1yX0rKV-sbD_XUqojHIwkMHUW1oow8l98KLL22eK-bihcfYQFSaJaWBNZXRr7BdIMCruyDdDdWMUO1eEXBfikL45crwpa3PUlwWWNk3PksQHxZ1iCu360utrqf7fx4iEDnkvibL5MoirnWOudVX1RFDt8gE99XVMTifnsM3qTBOmdY5j46nMthXIGqvF2iL2X34kFyNjAgvf5e8XNKC20sXEDXT7EQL-7f09Sn-_EByyiwy9Niq0e-cVHWbgefwrakdWKkt-FTG" charset="UTF-8"></script><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=DyigsA7-NoMH7Swnww9tytalw4vMMYzecknN6fAdFGfnfyFxBhlE99_kkke_WRHapuOew8-VQjMbmXJOpzIVvMmOsEx_Xzg5K-qQYHmpInTNGStG9U77JEqVvhDIQrkd8lW9sjMVHzSsaUEQp_LwQXW60XARRz6SBvoN2-nPO_AASt-BQm79znHQ-18vChPfJGOLDn8ODgJx-2jIahAXeUdb4qW56ROFVVZNOud0XAZS9UKYI1bTU1zqBX9D55vL9P6PTG3FYheGidkmDX_qDWaEGTlH6LpkqBQcQ-O6qU4QXx2_iCflZQi1JokLTWaE" charset="UTF-8"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#9CB5AD">
+<meta name="theme-color" content="#96B8B8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -479,6 +479,7 @@
   }
   .search-input:focus{border-color:rgba(122,61,10,.38);background:rgba(246,241,229,.78);box-shadow:0 0 0 3px rgba(122,61,10,.07);}
   .search-input::placeholder{color:var(--ink-soft);opacity:.72;}
+  .search-input::-webkit-search-cancel-button,.cat-search::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;}
   .search-clear{width:36px;height:36px;flex:0 0 36px;border:1px solid rgba(87,42,7,.12);border-radius:12px;background:rgba(246,241,229,.66);color:var(--brown);cursor:pointer;}
   .search-count{margin:3px 4px 10px;font-size:10.5px;color:var(--ink-soft);font-style:italic;}
   .swipe-hint{text-align:center;font-size:9.5px;color:rgba(74,42,12,.38);margin:5px 0 3px;letter-spacing:.035em;}
@@ -581,9 +582,13 @@
   .modal h2{margin:0 0 18px;text-align:center;font-family:var(--font-display);font-weight:850;font-size:27px;line-height:1.05;letter-spacing:.015em;color:var(--brown-deep);text-transform:uppercase;}
   .modal label{display:block;margin:16px 0 7px;text-align:left;font-family:var(--font-body);font-size:10px;font-weight:800;letter-spacing:.07em;color:var(--ink-soft);text-transform:uppercase;}
   .amount-input{width:100%;padding:2px 0 9px;border:0;border-bottom:1.5px solid var(--brown);outline:0;background:transparent;color:var(--brown-deep);text-align:center;font-family:var(--font-head);font-size:34px;font-weight:850;letter-spacing:-.04em;font-variant-numeric:tabular-nums;}
-  .modal input[type=text],.modal input[type=date]{width:100%;min-height:43px;padding:10px 13px;border:1px solid rgba(87,42,7,.28);border-radius:12px;outline:0;background:rgba(255,255,255,.20);color:var(--brown-deep);font-family:var(--font-body);font-size:13px;transition:border-color .15s ease,box-shadow .15s ease,background .15s ease;}
-  .modal input[type=text]:focus,.modal input[type=date]:focus{border-color:rgba(122,61,10,.58);background:rgba(255,255,255,.32);box-shadow:0 0 0 3px rgba(122,61,10,.07);}
-  .modal input[type=text]::placeholder{color:var(--ink-soft);opacity:.58;}
+  .amount-input::-webkit-outer-spin-button,.amount-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .amount-input{-moz-appearance:textfield;appearance:textfield;}
+  .modal input[type=text],.modal input[type=search]{width:100%;min-height:43px;padding:10px 13px;border:1px solid rgba(87,42,7,.28);border-radius:12px;outline:0;background:rgba(255,255,255,.20);color:var(--brown-deep);font-family:var(--font-body);font-size:13px;transition:border-color .15s ease,box-shadow .15s ease,background .15s ease;}
+  .modal input[type=text]:focus,.modal input[type=search]:focus{border-color:rgba(122,61,10,.58);background:rgba(255,255,255,.32);box-shadow:0 0 0 3px rgba(122,61,10,.07);}
+  .modal input[type=text]::placeholder,.modal input[type=search]::placeholder{color:var(--ink-soft);opacity:.58;}
+  .modal .cat-search{min-height:38px;margin-bottom:8px;padding:8px 12px;font-size:12.5px;}
+  .modal-text{margin:0;text-align:center;color:var(--ink-soft);font-size:13px;line-height:1.5;}
   .quick-amounts{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:10px 0 2px;}
   .quick-amt{padding:6px 10px;border:1px solid rgba(87,42,7,.24);border-radius:10px;background:rgba(255,255,255,.15);color:var(--brown);font-size:10.5px;font-weight:750;cursor:pointer;transition:background .15s ease,color .15s ease,transform .15s ease;}
   .quick-amt:hover{background:var(--brown);color:var(--cream-text);transform:translateY(-1px);}
@@ -602,7 +607,33 @@
   .member-seg-inner::-webkit-scrollbar{display:none;}
   .member-seg .chip{flex:0 0 auto;max-width:none;min-height:34px;padding:8px 12px;border:0;border-radius:9px;background:transparent;color:var(--brown-deep);white-space:nowrap;}
   .member-seg .chip.selected{background:var(--brown);color:var(--cream-text);}
+  .chip-create{grid-column:1/-1;}
+  .chip-empty{grid-column:1/-1;padding:10px 0;text-align:center;color:var(--ink-soft);font-size:12px;font-style:italic;}
+
+  /* выбор даты (своё окно вместо системного) */
+  .date-trigger{width:100%;min-height:43px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 13px;border:1px solid rgba(87,42,7,.28);border-radius:12px;background:rgba(255,255,255,.20);color:var(--brown-deep);font-size:13px;font-weight:650;text-align:left;cursor:pointer;transition:border-color .15s ease,background .15s ease,box-shadow .15s ease;}
+  .date-trigger:hover,.date-trigger.open{border-color:rgba(122,61,10,.58);background:rgba(255,255,255,.32);}
+  .date-trigger.open{box-shadow:0 0 0 3px rgba(122,61,10,.07);}
+  .date-trigger-chev{color:var(--brown);font-size:11px;transition:transform .2s var(--ease);}
+  .date-trigger.open .date-trigger-chev{transform:rotate(180deg);}
+  .date-pop{margin-top:8px;padding:12px;border:1px solid rgba(87,42,7,.14);border-radius:16px;background:var(--cream);box-shadow:var(--shadow-sm);animation:panelDrop .22s var(--ease) both;}
+  .dp-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;}
+  .dp-title{font-family:var(--font-head);font-weight:850;font-size:15px;color:var(--brown-deep);letter-spacing:-.01em;text-transform:uppercase;}
+  .dp-nav{width:32px;height:32px;display:grid;place-items:center;padding:0;border:0;border-radius:10px;background:transparent;color:var(--brown);font-size:22px;line-height:1;cursor:pointer;transition:background .15s ease;}
+  .dp-nav:hover{background:rgba(122,61,10,.08);}
+  .dp-quick{display:flex;gap:6px;margin-bottom:10px;}
+  .dp-quick .quick-amt.active{background:var(--brown);color:var(--cream-text);}
+  .dp-weekdays,.dp-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;}
+  .dp-weekdays{margin-bottom:6px;}
+  .dp-weekdays span{text-align:center;font-size:8px;font-weight:800;color:rgba(87,42,7,.55);letter-spacing:.055em;text-transform:uppercase;}
+  .dp-day{height:36px;min-width:0;display:flex;align-items:center;justify-content:center;padding:0;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--brown-deep);font-size:12px;font-weight:700;cursor:pointer;transition:background .15s ease,transform .15s var(--spring);}
+  .dp-day:hover{background:rgba(122,61,10,.10);transform:translateY(-1px);}
+  .dp-day.empty{visibility:hidden;}
+  .dp-day.today{border-color:var(--brown);}
+  .dp-day.selected{background:var(--brown-deep);border-color:var(--brown-deep);color:var(--cream-text);}
+
   .modal-actions{position:sticky;bottom:-22px;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:24px -4px -4px;padding:14px 4px 4px;background:linear-gradient(to bottom,rgba(246,241,229,0),var(--cream-soft) 24%);z-index:3;}
+  .modal-actions.three{grid-template-columns:auto 1fr 1fr;}
   .btn{min-height:44px;padding:10px 14px;border:1px solid var(--brown);border-radius:12px;font-family:var(--font-display);font-size:15px;font-weight:750;letter-spacing:.02em;text-transform:uppercase;cursor:pointer;transition:transform .15s var(--ease),filter .15s ease,box-shadow .15s ease;}
   .btn:hover{transform:translateY(-1px);filter:brightness(1.03);}
   .btn-primary{background:var(--brown);color:var(--cream-text);box-shadow:0 5px 12px rgba(87,42,7,.13);}
@@ -635,16 +666,17 @@
   .onboard-name-input{width:100%;min-height:43px;margin-top:6px;padding:10px 13px;border:1px solid rgba(87,42,7,.28);border-radius:12px;background:rgba(255,255,255,.25);color:var(--brown-deep);font-size:13px;}
   .style-dot{width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:var(--ink-soft);}
   .style-dot.gold{background:linear-gradient(135deg,#8D5B16,#E3BD63);}.style-dot.blue{background:linear-gradient(135deg,#355E91,#88B4D7);}.style-dot.red{background:linear-gradient(135deg,#8E332E,#D77A65);}.style-dot.teal{background:linear-gradient(135deg,#386D69,#85B8AD);}.style-dot.silver{background:linear-gradient(135deg,#72777E,#D8D9D7);}.style-dot.none{background:#9F9385;}
+  /* Перелив ника: полоса фиксированной ширины сдвигается ровно на свою длину, поэтому кадры склеиваются без рывка.
+     Без filter и will-change — с ними на телефонах анимация переставала перерисовываться. */
   @keyframes shimmer-flow{
-    0%{background-position:0% 50%;}
-    100%{background-position:200% 50%;}
+    from{background-position:0 0;}
+    to{background-position:160px 0;}
   }
   .name-shimmer{
     display:inline-block;
     max-width:100%;
-    /* Shift by exactly one repeated tile: the first and last frames match. */
     background-color:var(--brown);
-    background-size:200% 100%;
+    background-size:160px 100%;
     background-repeat:repeat-x;
     -webkit-background-clip:text;
     background-clip:text;
@@ -652,8 +684,6 @@
     color:transparent;
     animation:shimmer-flow 3.2s linear infinite;
     font-weight:800;
-    filter:drop-shadow(0 1px 0 rgba(255,255,255,.08));
-    will-change:background-position;
   }
   .shimmer-warm,.shimmer-gold{background-image:linear-gradient(90deg,#6a3508 0%,#6a3508 12%,#9a5b1f 24%,#f0d89a 43%,#fff0bc 49%,#c68d3d 57%,#7a3d0a 78%,#6a3508 88%,#6a3508 100%);}
   .shimmer-blue{background-image:linear-gradient(90deg,#31577f 0%,#31577f 12%,#6f9ec5 28%,#d9edf6 48%,#8fc4dd 57%,#355E91 78%,#31577f 88%,#31577f 100%);}
@@ -699,7 +729,13 @@
   @keyframes panelDrop{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
   .trend-breakdown{margin-top:14px;padding-top:14px;border-top:1px solid rgba(87,42,7,.11);animation:panelDrop .26s var(--ease) both;}.trend-breakdown-title{margin-bottom:9px;display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--ink-soft);font-size:9.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;}.trend-breakdown-close{color:var(--brown);cursor:pointer;text-decoration:none;}.trend-breakdown-close:hover{text-decoration:underline;}.trend-breakdown-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:6px 0;font-size:12px;animation:sectionRise .28s var(--ease) both;}.trend-breakdown-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--brown-deep);font-weight:650;text-transform:lowercase;}.trend-breakdown-amt{color:var(--brown);font-weight:750;font-style:italic;font-variant-numeric:tabular-nums;}
   .cat-change-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid rgba(87,42,7,.10);font-size:12px;animation:sectionRise .35s var(--ease) both;}.cat-change-row:last-child{border-bottom:0;}.cat-change-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--brown-deep);font-weight:650;text-transform:lowercase;}.cat-change-nums{display:flex;align-items:center;gap:8px;color:var(--ink-soft);font-size:11px;font-variant-numeric:tabular-nums;white-space:nowrap;}
-  .weekday-chart{height:116px;display:flex;align-items:flex-end;gap:8px;}.weekday-bar-col{flex:1;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;}.weekday-bar{width:72%;min-height:2px;border-radius:4px 4px 0 0;background:var(--brown);opacity:.48;transform-origin:bottom;animation:barGrow .45s var(--spring) both;transition:opacity .2s ease;}.weekday-bar-col.peak .weekday-bar{opacity:1;animation:barGrow .45s var(--spring) both,peakPulse 2.4s ease-in-out .6s infinite;}@keyframes peakPulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.16);}}.weekday-bar-label{margin-top:6px;color:var(--ink-soft);font-size:9px;font-weight:800;text-transform:uppercase;}.weekday-bar-amt{margin-top:2px;color:var(--ink-soft);font-size:8px;opacity:.78;}.compare-card h4{display:none;}
+  .compare-card h4{display:none;}
+  .compare-note{margin:-4px 0 14px;color:var(--ink-soft);font-size:11px;font-style:italic;line-height:1.45;}
+  .analytics-section.wide{grid-column:1/-1;}
+  .analytics-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin:4px 24px 14px;}
+  .analytics-controls .period-toggle{margin:0;}
+  .analytics-wheel{padding:2px 4px;border:1px solid rgba(255,255,255,.3);border-radius:14px;background:rgba(246,241,229,.66);}
+  .analytics-wheel .wheel-main{min-width:170px;text-align:center;font-size:17px;}
 
   /* ================= ADAPTIVE ================= */
   @media (min-width:761px){.swipe-hint{display:none;}}
@@ -739,6 +775,7 @@
     .donut-row{grid-template-columns:132px minmax(0,1fr);gap:15px;}.donut-svg-wrap{width:132px;height:132px;}.donut-svg-wrap svg{width:132px;height:132px;}.donut-svg-wrap::after{inset:34px;}
     .budget-wrap{margin-left:12px;margin-right:12px;}
     .analytics-wrap{grid-template-columns:1fr;gap:12px;}.analytics-section{padding:16px;}.period-toggle{margin-left:12px;margin-right:12px;}
+    .analytics-controls{margin-left:12px;margin-right:12px;justify-content:center;}
     .profile-fab{left:14px}.fab{right:14px}.profile-fab,.fab{bottom:16px;width:50px;height:50px;border-radius:15px;}
   }
 
@@ -754,10 +791,11 @@
     .receipt-member{font-size:9.5px;max-width:82px;}.receipt-amount{font-size:11.5px;}.receipt-cat{font-size:12.5px;}
     .day-detail-header{align-items:flex-start;flex-direction:column;gap:8px;}.back-to-month{align-self:flex-start;}
     .modal{padding:22px 18px 18px;border-radius:18px;}.modal h2{font-size:24px;}.chip-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.modal-actions{bottom:-18px;margin-left:-2px;margin-right:-2px;}
+    .modal-actions.three{grid-template-columns:1fr 1fr;}.modal-actions.three>:first-child{grid-column:1/-1;order:3;}
   }
 
   @media (max-width:390px){
-    .topbar{padding-inline:10px;}.period-band{padding-inline:10px;}.puddle-slot{width:100%;}.cream-panel{padding-inline:10px;}.cal-donut-wrap,.tape-wrap,.analytics-wrap{padding-left:9px;padding-right:9px;}.budget-wrap{margin-left:9px;margin-right:9px;}
+    .topbar{padding-inline:10px;}.period-band{padding-inline:10px;}.puddle-slot{width:100%;}.cream-panel{padding-inline:10px;}.cal-donut-wrap,.tape-wrap,.analytics-wrap{padding-left:9px;padding-right:9px;}.budget-wrap{margin-left:9px;margin-right:9px;}.analytics-controls{margin-left:9px;margin-right:9px;}
     .receipt{grid-template-columns:1fr;}.receipt-tail{min-width:0;width:100%;padding:8px 0 0;border-left:0;border-top:1px solid rgba(87,42,7,.11);grid-template-columns:minmax(0,1fr) auto;}.receipt-member{max-width:none;}
     .cat-change-row{grid-template-columns:1fr;}.cat-change-nums{justify-content:space-between;overflow-x:auto;}
   }
@@ -799,6 +837,7 @@ const WEEKDAYS_SHORT = ['пн','вт','ср','чт','пт','сб','вс'];
 const MONTHS = ['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
 const MONTHS_GENITIVE = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
 const MONTHS_SHORT = ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
+const MONTHS_PREP = ['январе','феврале','марте','апреле','мае','июне','июле','августе','сентябре','октябре','ноябре','декабре'];
 
 const today0 = new Date();
 let state = {
@@ -809,7 +848,8 @@ let state = {
   monthExpenses: [],
   yearTotal: 0,
   currentPage: 'home',
-  comparePeriod: 'week',
+  comparePeriod: 'month',
+  analyticsWeekOffset: 0,
   analytics: null,
   selectedTrendIndex: null,
   trendPoints: null,
@@ -872,6 +912,8 @@ window.addEventListener('offline', updateOnlineStatus);
 function pad(n){ return n<10 ? '0'+n : ''+n; }
 function toDateStr(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
 function escapeHtml(s){ const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+// для поиска: без учёта регистра и разницы «е»/«ё»
+function normalizeSearch(s){ return String(s||'').toLowerCase().replace(/ё/g,'е').trim(); }
 
 async function loadMembers(){
   const {data, error} = await sb.from('members').select('*');
@@ -928,7 +970,8 @@ async function loadCategories(){
 }
 async function addCategoryRow(c){
   const {error} = await sb.from('categories').insert(c);
-  if(error) toast('Не удалось сохранить категорию');
+  if(error){ toast('Не удалось сохранить категорию'); return false; }
+  return true;
 }
 async function updateCategoryRow(id, patch){
   const {error} = await sb.from('categories').update(patch).eq('id', id);
@@ -968,7 +1011,8 @@ async function insertExpense(exp){
 }
 async function deleteExpenseRow(id){
   const {error} = await sb.from('expenses').delete().eq('id', id);
-  if(error) toast('Не удалось удалить трату');
+  if(error){ toast('Не удалось удалить трату'); return false; }
+  return true;
 }
 async function updateExpenseRow(id, patch){
   const {error} = await sb.from('expenses').update({
@@ -978,12 +1022,18 @@ async function updateExpenseRow(id, patch){
   if(error){ toast('Не удалось сохранить изменения'); return false; }
   return true;
 }
+const PAGE_SIZE = 1000; // Supabase отдаёт не больше 1000 строк за запрос — остальное догружаем частями
 async function fetchExpensesRange(startStr, endStr, memberId){
-  let q = sb.from('expenses').select('*').gte('date', startStr).lte('date', endStr);
-  if(memberId && memberId !== 'all') q = q.eq('member_id', memberId);
-  const {data, error} = await q;
-  if(error){ toast('Ошибка загрузки трат'); return []; }
-  return (data||[]).map(r=>({id:r.id, amount:Number(r.amount), categoryId:r.category_id, memberId:r.member_id, note:r.note, date: r.date, createdAt: Number(r.created_at)}));
+  const rows = [];
+  for(let from = 0; ; from += PAGE_SIZE){
+    let q = sb.from('expenses').select('*').gte('date', startStr).lte('date', endStr).order('id').range(from, from + PAGE_SIZE - 1);
+    if(memberId && memberId !== 'all') q = q.eq('member_id', memberId);
+    const {data, error} = await q;
+    if(error){ toast('Ошибка загрузки трат'); return []; }
+    rows.push(...(data||[]));
+    if(!data || data.length < PAGE_SIZE) break;
+  }
+  return rows.map(r=>({id:r.id, amount:Number(r.amount), categoryId:r.category_id, memberId:r.member_id, note:r.note, date: r.date, createdAt: Number(r.created_at)}));
 }
 
 function loadMyMemberId(){ state.myMemberId = localStorage.getItem('family-cash-member-id'); }
@@ -1031,12 +1081,17 @@ function currentWeekRange(offset){
   const end = new Date(start); end.setDate(start.getDate()+6);
   return {start, end};
 }
-function currentMonthRangeReal(offset){
-  offset = offset || 0;
-  const t = new Date();
-  let y = t.getFullYear(), m = t.getMonth()+offset;
+function shiftedMonthRange(year, month, offset){
+  let y = year, m = month + (offset || 0);
   while(m<0){ m+=12; y-=1; } while(m>11){ m-=12; y+=1; }
   return monthRange(y, m);
+}
+function daysInRange(range){ return Math.round((range.end - range.start)/86400000) + 1; }
+// сколько дней периода уже прошло (для идущего периода — по сегодня включительно)
+function elapsedDays(range){
+  const today = new Date(); today.setHours(0,0,0,0);
+  if(today < range.start || today > range.end) return daysInRange(range);
+  return Math.round((today - range.start)/86400000) + 1;
 }
 function sumByCategoryMap(expenses){
   const map = {};
@@ -1088,15 +1143,15 @@ function renderApp(){
 
 function renderOnboarding(){
   return `
-  <div style="max-width:420px;margin:60px auto;text-align:center;">
+  <div style="max-width:420px;margin:60px auto;padding:0 16px;text-align:center;">
     <h1 style="font-family:var(--font-display);color:var(--gold-soft);font-size:28px;">Семейная касса</h1>
-    <p style="color:rgba(243,236,221,0.65);font-size:14px;">Кто вы? Выберите себя из списка или добавьте нового участника семьи.</p>
-    <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:20px 0;">
-      ${state.members.map(m=>`<div class="member-chip" style="padding:8px 16px;font-size:14px;" data-select-member="${m.id}">${avatarHtml(m,24,11)}${memberNameHtml(m)}</div>`).join('')}
+    <p style="color:var(--brown-deep);font-size:14px;line-height:1.5;">Кто вы? Выберите себя из списка или добавьте нового участника семьи.</p>
+    <div class="member-pill-group" style="flex-wrap:wrap;justify-content:center;gap:6px;margin:20px 0;">
+      ${state.members.map(m=>`<button type="button" class="member-chip" style="border:0;padding:8px 16px;font-size:13px;" data-select-member="${m.id}">${avatarHtml(m,24,11)}${memberNameHtml(m)}</button>`).join('')}
     </div>
     <div style="background:var(--bg-panel);border-radius:14px;padding:18px;text-align:left;">
-      <label style="font-size:12px;color:rgba(243,236,221,0.55);text-transform:uppercase;">Новый участник</label>
-      <input class="onboard-name-input" id="new-member-name" type="text" placeholder="Например, Аня" style="background:#fff;">
+      <label for="new-member-name" style="font-size:11px;font-weight:800;letter-spacing:.07em;color:var(--ink-soft);text-transform:uppercase;">Новый участник</label>
+      <input class="onboard-name-input" id="new-member-name" type="text" placeholder="Например, Аня">
       <div class="color-pick" id="new-member-colors">
         ${MEMBER_COLORS.map((c,i)=>`<div class="color-swatch ${i===0?'selected':''}" data-color="${c}" style="background:${c};"></div>`).join('')}
       </div>
@@ -1236,9 +1291,14 @@ function renderMemberChip(id, name, member){
   return `<div class="member-chip ${active}" data-filter-member="${id}">${dot}${label}</div>`;
 }
 
+let refreshToken = 0;
 async function refreshData(){
+  // при быстром листании месяцев показываем только ответ на последний запрос
+  const token = ++refreshToken;
   const range = monthRange(state.selectedYear, state.selectedMonth);
-  state.monthExpenses = await fetchExpensesRange(toDateStr(range.start), toDateStr(range.end), state.filterMemberId);
+  const expenses = await fetchExpensesRange(toDateStr(range.start), toDateStr(range.end), state.filterMemberId);
+  if(token !== refreshToken) return;
+  state.monthExpenses = expenses;
   const monthTotal = state.monthExpenses.reduce((s,e)=>s+e.amount,0);
   updateOilPuddle(monthTotal);
   renderBudget(monthTotal);
@@ -1374,11 +1434,11 @@ function openCategoryManager(onClose){
       list.innerHTML = '<div style="font-size:13px;color:var(--ink-soft);font-style:italic;padding:8px 0;">Категорий пока нет.</div>';
       return;
     }
-    list.innerHTML = state.categories.map(c=>`
+    list.innerHTML = sortedCategories().map(c=>`
       <div class="cat-manage-row" data-cat-id="${c.id}">
         <span class="cat-manage-dot" style="background:${resolveColor(c.color)};"></span>
         <input class="cat-manage-name" type="text" value="${escapeHtml(c.name)}" data-orig="${escapeHtml(c.name)}">
-        <button class="cat-del-btn" title="Удалить">✕</button>
+        <button class="cat-del-btn" title="Удалить" aria-label="Удалить категорию">✕</button>
       </div>`).join('');
 
     list.querySelectorAll('.cat-manage-row').forEach(row=>{
@@ -1411,7 +1471,12 @@ function openCategoryManager(onClose){
             `«${cat ? cat.name : ''}» используется в ${used} тратах — сначала измените их категорию.`;
           return;
         }
-        if(!confirm(`Удалить категорию «${cat ? cat.name : ''}»?`)) return;
+        const sure = await confirmDialog({
+          title: 'Удалить категорию?',
+          text: `«${cat ? cat.name : ''}» исчезнет из списка категорий.`,
+          confirmLabel: 'Удалить', danger: true
+        });
+        if(!sure) return;
         const ok = await deleteCategoryRow(id);
         if(!ok) return;
         state.categories = state.categories.filter(c=>c.id!==id);
@@ -1430,8 +1495,9 @@ function openCategoryManager(onClose){
     const btn = overlay.querySelector('#new-cat-add');
     setBtnLoading(btn, true);
     const newCat = {id: uid(), name, color: pickCategoryColor()};
-    await addCategoryRow(newCat);
+    const ok = await addCategoryRow(newCat);
     setBtnLoading(btn, false);
+    if(!ok) return;
     state.categories.push(newCat);
     input.value = '';
     renderList();
@@ -1456,7 +1522,7 @@ function openBudgetModal(){
       <label>Сумма</label>
       <input class="amount-input" id="budget-amount" type="number" inputmode="decimal" placeholder="0" min="0" step="100" value="${cur}">
       <div class="modal-error" id="budget-error"></div>
-      <div class="modal-actions">
+      <div class="modal-actions ${cur!=='' ? 'three' : ''}">
         ${cur!=='' ? '<button class="btn btn-secondary" id="budget-clear">Убрать</button>' : ''}
         <button class="btn btn-secondary" id="budget-cancel">Отмена</button>
         <button class="btn btn-primary" id="budget-save">Сохранить</button>
@@ -1683,11 +1749,14 @@ function formatDateLong(dateStr){
   return d.getDate()+' '+MONTHS_GENITIVE[d.getMonth()]+', '+WEEKDAYS[d.getDay()];
 }
 
-function shiftMonth(delta){
+function moveSelectedMonth(delta){
   state.selectedMonth += delta;
   while(state.selectedMonth < 0){ state.selectedMonth += 12; state.selectedYear -= 1; }
   while(state.selectedMonth > 11){ state.selectedMonth -= 12; state.selectedYear += 1; }
   state.selectedDay = null;
+}
+function shiftMonth(delta){
+  moveSelectedMonth(delta);
   haptic();
   renderApp();
 }
@@ -1746,45 +1815,226 @@ function attachSwipeNavigation(){
     if(e.touches.length !== 1) { tracking = false; return; }
     const t = e.touches[0];
     // не перехватываем свайпы внутри полей ввода и горизонтально прокручиваемых блоков
-    if(e.target.closest('input, textarea, .overlay, .chip-grid')) { tracking = false; return; }
+    if(e.target.closest('input, textarea, .overlay, .chip-grid, .member-pill-group')) { tracking = false; return; }
     startX = t.clientX; startY = t.clientY; tracking = true;
   }, {passive:true});
   app.addEventListener('touchend', (e)=>{
     if(!tracking) return;
     tracking = false;
-    if(state.currentPage !== 'home') return;      // свайп работает только в «Кассе»
     if(document.querySelector('.overlay')) return; // не мешаем открытым окнам
     const t = e.changedTouches[0];
     const dx = t.clientX - startX, dy = t.clientY - startY;
     if(Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy)*1.8){
-      shiftMonth(dx < 0 ? 1 : -1);
+      const dir = dx < 0 ? 1 : -1;
+      if(state.currentPage === 'analytics') shiftAnalyticsPeriod(dir);
+      else shiftMonth(dir);
     }
   }, {passive:true});
 }
 
 const QUICK_AMOUNTS = [100, 300, 500, 1000, 2000, 5000];
 
+// ---------- ОБЩИЕ ЭЛЕМЕНТЫ ОКОН ----------
+
+function sortedCategories(){
+  return state.categories.slice().sort((a,b)=>(a.name||'').localeCompare(b.name||'', 'ru', {sensitivity:'base'}));
+}
+
+function memberSegHtml(selectedId){
+  return `<div class="member-seg" style="margin-top:14px;">
+        <div class="member-seg-inner" id="member-chips">
+          ${state.members.map(m=>`<button type="button" class="chip ${m.id===selectedId?'selected':''}" data-mem="${m.id}">${escapeHtml(m.name)}</button>`).join('')}
+        </div>
+      </div>`;
+}
+
+function categoryPickerHtml(){
+  return `<div class="label-row"><label for="cat-search">Категория</label><button type="button" class="manage-cats-link" id="manage-cats-link">управлять</button></div>
+      <input type="search" class="cat-search" id="cat-search" placeholder="Найти категорию…" autocomplete="off" enterkeyhint="done">
+      <div class="chip-grid" id="cat-chips"></div>`;
+}
+
+// Выбор категории: список по алфавиту + поиск без учёта регистра; если нужной нет — можно сразу создать
+function mountCategoryPicker(overlay, initialId, autoSelectFirst){
+  const picker = {selected: initialId};
+  const box = overlay.querySelector('#cat-chips');
+  const search = overlay.querySelector('#cat-search');
+
+  function visibleCategories(){
+    const q = normalizeSearch(search.value);
+    const all = sortedCategories();
+    return q ? all.filter(c=>normalizeSearch(c.name).includes(q)) : all;
+  }
+  function render(){
+    const all = sortedCategories();
+    if(autoSelectFirst && all.length && !all.some(c=>c.id===picker.selected)) picker.selected = all[0].id;
+    const list = visibleCategories();
+    const rawQuery = search.value.trim();
+    const q = normalizeSearch(rawQuery);
+    const exactExists = q && all.some(c=>normalizeSearch(c.name)===q);
+
+    let html = list.map(c=>
+      `<button type="button" class="chip ${c.id===picker.selected?'selected':''}" data-cat="${c.id}">${escapeHtml(c.name)}</button>`
+    ).join('');
+    if(!list.length && !q) html = '<div class="chip-empty">Категорий пока нет — нажмите «управлять»</div>';
+    if(q && !exactExists) html += `<button type="button" class="chip add-cat-chip chip-create" id="cat-create">+ создать «${escapeHtml(rawQuery)}»</button>`;
+    box.innerHTML = html;
+
+    box.querySelectorAll('.chip[data-cat]').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        box.querySelectorAll('.chip[data-cat]').forEach(c=>c.classList.remove('selected'));
+        chip.classList.add('selected'); picker.selected = chip.getAttribute('data-cat');
+        haptic(8);
+      });
+    });
+    const createBtn = box.querySelector('#cat-create');
+    if(createBtn) createBtn.addEventListener('click', async ()=>{
+      const name = search.value.trim();
+      if(!name) return;
+      createBtn.disabled = true;
+      const newCat = {id: uid(), name, color: pickCategoryColor()};
+      const ok = await addCategoryRow(newCat);
+      if(!ok){ createBtn.disabled = false; return; }
+      state.categories.push(newCat);
+      picker.selected = newCat.id;
+      search.value = '';
+      render();
+      haptic(8);
+      toast('Категория добавлена');
+    });
+  }
+
+  search.addEventListener('input', render);
+  search.addEventListener('keydown', (e)=>{
+    if(e.key !== 'Enter') return;
+    e.preventDefault();
+    const first = visibleCategories()[0];
+    if(first){ picker.selected = first.id; render(); haptic(8); search.blur(); }
+  });
+  picker.render = render;
+  render();
+  // при правке траты сразу показываем выбранную категорию, даже если она ниже в списке
+  const sel = box.querySelector('.chip.selected');
+  if(sel) box.scrollTop += sel.getBoundingClientRect().top - box.getBoundingClientRect().top - 4;
+  return picker;
+}
+
+function formatDatePicked(dateStr){
+  const d = new Date(dateStr+'T00:00:00');
+  const now = new Date();
+  const yesterday = new Date(); yesterday.setDate(now.getDate()-1);
+  const base = d.getDate()+' '+MONTHS_GENITIVE[d.getMonth()] + (d.getFullYear()!==now.getFullYear() ? ' '+d.getFullYear() : '');
+  if(dateStr===toDateStr(now)) return 'Сегодня, '+base;
+  if(dateStr===toDateStr(yesterday)) return 'Вчера, '+base;
+  return base+', '+WEEKDAYS[d.getDay()];
+}
+
+// Своё окно выбора даты в стиле приложения (вместо системного календаря)
+function mountDatePicker(container, initialStr){
+  const picker = {value: initialStr};
+  let open = false, viewY, viewM;
+  function syncView(){ const d = new Date(picker.value+'T00:00:00'); viewY = d.getFullYear(); viewM = d.getMonth(); }
+  syncView();
+
+  function render(focusSelector){
+    const todayStr = toDateStr(new Date());
+    const y = new Date(); y.setDate(y.getDate()-1);
+    const yesterdayStr = toDateStr(y);
+    let html = `<button type="button" class="date-trigger ${open?'open':''}" aria-expanded="${open}">
+        <span>${formatDatePicked(picker.value)}</span><span class="date-trigger-chev" aria-hidden="true">▼</span>
+      </button>`;
+    if(open){
+      let offset = new Date(viewY, viewM, 1).getDay() - 1;
+      if(offset < 0) offset = 6;
+      const days = new Date(viewY, viewM+1, 0).getDate();
+      let cells = '';
+      for(let i=0;i<offset;i++) cells += '<span class="dp-day empty"></span>';
+      for(let d=1; d<=days; d++){
+        const ds = viewY+'-'+pad(viewM+1)+'-'+pad(d);
+        const cls = ['dp-day', ds===picker.value?'selected':'', ds===todayStr?'today':''].filter(Boolean).join(' ');
+        cells += `<button type="button" class="${cls}" data-date="${ds}" aria-label="${formatDatePicked(ds)}">${d}</button>`;
+      }
+      html += `<div class="date-pop">
+        <div class="dp-head">
+          <button type="button" class="dp-nav" data-nav="-1" aria-label="Предыдущий месяц">‹</button>
+          <span class="dp-title">${MONTHS[viewM]} ${viewY}</span>
+          <button type="button" class="dp-nav" data-nav="1" aria-label="Следующий месяц">›</button>
+        </div>
+        <div class="dp-quick">
+          <button type="button" class="quick-amt ${picker.value===todayStr?'active':''}" data-date="${todayStr}">Сегодня</button>
+          <button type="button" class="quick-amt ${picker.value===yesterdayStr?'active':''}" data-date="${yesterdayStr}">Вчера</button>
+        </div>
+        <div class="dp-weekdays">${WEEKDAYS_SHORT.map(w=>`<span>${w}</span>`).join('')}</div>
+        <div class="dp-days">${cells}</div>
+      </div>`;
+    }
+    container.innerHTML = html;
+
+    container.querySelector('.date-trigger').addEventListener('click', ()=>{
+      open = !open;
+      if(open) syncView();
+      haptic(8);
+      render('.date-trigger');
+    });
+    container.querySelectorAll('[data-nav]').forEach(b=> b.addEventListener('click', ()=>{
+      const dir = Number(b.getAttribute('data-nav'));
+      viewM += dir;
+      if(viewM < 0){ viewM = 11; viewY -= 1; }
+      if(viewM > 11){ viewM = 0; viewY += 1; }
+      render(`[data-nav="${dir}"]`);
+    }));
+    container.querySelectorAll('[data-date]').forEach(b=> b.addEventListener('click', ()=>{
+      picker.value = b.getAttribute('data-date');
+      open = false;
+      syncView();
+      haptic(8);
+      render('.date-trigger');
+    }));
+    if(focusSelector){ const f = container.querySelector(focusSelector); if(f) f.focus(); }
+  }
+  container.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape' && open){ e.stopPropagation(); open = false; render('.date-trigger'); }
+  });
+  render();
+  return picker;
+}
+
+// Своё окно подтверждения вместо системного confirm()
+function confirmDialog(opts){
+  return new Promise(resolve=>{
+    const overlay = document.createElement('div'); overlay.className = 'overlay';
+    overlay.innerHTML = `
+      <div class="modal" style="max-width:360px;" role="dialog" aria-modal="true">
+        <h2>${escapeHtml(opts.title)}</h2>
+        ${opts.text ? `<p class="modal-text">${escapeHtml(opts.text)}</p>` : ''}
+        <div class="modal-actions">
+          <button class="btn btn-secondary" data-answer="no">Отмена</button>
+          <button class="btn ${opts.danger ? 'btn-danger' : 'btn-primary'}" data-answer="yes">${escapeHtml(opts.confirmLabel || 'Да')}</button>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    const done = (answer)=>{ overlay.remove(); resolve(answer); };
+    overlay.addEventListener('click', (e)=>{ if(e.target===overlay) done(false); });
+    overlay.querySelectorAll('[data-answer]').forEach(b=> b.addEventListener('click', ()=> done(b.getAttribute('data-answer')==='yes')));
+    setTimeout(()=> overlay.querySelector('[data-answer="yes"]').focus(), 50);
+  });
+}
+
 function openAddExpense(){
-  let selectedCategory = state.categories[0] ? state.categories[0].id : null;
   const overlay = document.createElement('div'); overlay.className = 'overlay';
   overlay.innerHTML = `
     <div class="modal">
       <h2>Новая трата</h2>
-      <label>Сумма</label>
+      <label for="exp-amount">Сумма</label>
       <input class="amount-input" id="exp-amount" type="number" inputmode="decimal" placeholder="0" min="0" step="0.01">
       <div class="quick-amounts" id="quick-amounts">
         ${QUICK_AMOUNTS.map(a=>`<button type="button" class="quick-amt" data-amt="${a}">+${a.toLocaleString('ru-RU')}</button>`).join('')}
       </div>
-      <div class="label-row"><label>Категория</label><button type="button" class="manage-cats-link" id="manage-cats-link">управлять</button></div>
-      <div class="chip-grid" id="cat-chips"></div>
-      <div class="member-seg" style="margin-top:14px;">
-        <div class="member-seg-inner" id="member-chips">
-          ${state.members.map(m=>`<div class="chip ${m.id===state.myMemberId?'selected':''}" data-mem="${m.id}">${escapeHtml(m.name)}</div>`).join('')}
-        </div>
-      </div>
+      ${categoryPickerHtml()}
+      ${memberSegHtml(state.myMemberId)}
       <label>Дата</label>
-      <input type="date" id="exp-date" value="${state.selectedDay || toDateStr(new Date())}">
-      <label>Заметка (необязательно)</label>
+      <div class="date-field" id="exp-date"></div>
+      <label for="exp-note">Заметка (необязательно)</label>
       <input type="text" id="exp-note" placeholder="Например, ужин в кафе">
       <div class="modal-error" id="exp-error"></div>
       <div class="modal-actions">
@@ -1795,24 +2045,8 @@ function openAddExpense(){
   document.body.appendChild(overlay);
   let selectedMember = state.myMemberId;
   let saving = false;
-
-  function renderCatChips(){
-    const box = overlay.querySelector('#cat-chips');
-    if(state.categories.length && !state.categories.some(c=>c.id===selectedCategory)){
-      selectedCategory = state.categories[0].id;
-    }
-    box.innerHTML = state.categories.map(c=>
-      `<div class="chip ${c.id===selectedCategory?'selected':''}" data-cat="${c.id}"><span class="chip-dot" style="background:${resolveColor(c.color)};"></span>${escapeHtml(c.name)}</div>`
-    ).join('');
-    box.querySelectorAll('.chip[data-cat]').forEach(chip=>{
-      chip.addEventListener('click', ()=>{
-        box.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
-        chip.classList.add('selected'); selectedCategory = chip.getAttribute('data-cat');
-        haptic(8);
-      });
-    });
-  }
-  renderCatChips();
+  const catPicker = mountCategoryPicker(overlay, null, true);
+  const datePicker = mountDatePicker(overlay.querySelector('#exp-date'), state.selectedDay || toDateStr(new Date()));
 
   const amountInput = overlay.querySelector('#exp-amount');
   overlay.querySelectorAll('.quick-amt').forEach(b=>{
@@ -1825,7 +2059,7 @@ function openAddExpense(){
   });
 
   overlay.querySelector('#manage-cats-link').addEventListener('click', ()=>{
-    openCategoryManager(()=> renderCatChips());
+    openCategoryManager(()=> catPicker.render());
   });
 
   overlay.querySelectorAll('#member-chips .chip').forEach(chip=>{
@@ -1843,9 +2077,10 @@ function openAddExpense(){
     if(saving) return;
     const btn = overlay.querySelector('#exp-save');
     const amountVal = parseFloat(amountInput.value);
-    const dateVal = overlay.querySelector('#exp-date').value;
+    const dateVal = datePicker.value;
     const noteVal = overlay.querySelector('#exp-note').value.trim();
     const errEl = overlay.querySelector('#exp-error');
+    const selectedCategory = catPicker.selected;
     if(!amountVal || amountVal<=0){ errEl.textContent = 'Укажите сумму больше нуля.'; return; }
     if(!selectedCategory){ errEl.textContent = 'Выберите категорию.'; return; }
     if(!selectedMember){ errEl.textContent = 'Выберите, кто платил.'; return; }
@@ -1974,7 +2209,10 @@ function openEditProfile(){
     const errEl = overlay.querySelector('#profile-error');
     if(!nameVal){ errEl.textContent = 'Введите имя.'; return; }
     const patch = {name: nameVal, color: selectedColor, animated_style: animatedStyle, photo: pendingPhoto};
+    const btn = overlay.querySelector('#profile-save');
+    setBtnLoading(btn, true);
     const ok = await updateMemberRow(me.id, patch);
+    setBtnLoading(btn, false);
     if(!ok) return;
     Object.assign(me, patch);
     overlay.remove();
@@ -1984,51 +2222,32 @@ function openEditProfile(){
 }
 
 function openEditExpense(exp){
-  let selectedCategory = exp.categoryId;
   let selectedMember = exp.memberId;
   const overlay = document.createElement('div'); overlay.className = 'overlay';
   overlay.innerHTML = `
     <div class="modal">
       <h2>Изменить трату</h2>
-      <label>Сумма</label>
+      <label for="exp-amount">Сумма</label>
       <input class="amount-input" id="exp-amount" type="number" inputmode="decimal" placeholder="0" min="0" step="0.01" value="${exp.amount}">
-      <div class="label-row"><label>Категория</label><button type="button" class="manage-cats-link" id="manage-cats-link">управлять</button></div>
-      <div class="chip-grid" id="cat-chips"></div>
-      <div class="member-seg" style="margin-top:14px;">
-        <div class="member-seg-inner" id="member-chips">
-          ${state.members.map(m=>`<div class="chip ${m.id===selectedMember?'selected':''}" data-mem="${m.id}">${escapeHtml(m.name)}</div>`).join('')}
-        </div>
-      </div>
+      ${categoryPickerHtml()}
+      ${memberSegHtml(selectedMember)}
       <label>Дата</label>
-      <input type="date" id="exp-date" value="${exp.date}">
-      <label>Заметка (необязательно)</label>
+      <div class="date-field" id="exp-date"></div>
+      <label for="exp-note">Заметка (необязательно)</label>
       <input type="text" id="exp-note" placeholder="Например, ужин в кафе" value="${exp.note ? escapeHtml(exp.note) : ''}">
       <div class="modal-error" id="exp-error"></div>
-      <div class="modal-actions">
+      <div class="modal-actions three">
         <button class="btn btn-danger" id="exp-delete">Удалить</button>
         <button class="btn btn-secondary" id="exp-cancel">Отмена</button>
         <button class="btn btn-primary" id="exp-save">Сохранить</button>
       </div>
     </div>`;
   document.body.appendChild(overlay);
-
-  function renderCatChips(){
-    const box = overlay.querySelector('#cat-chips');
-    box.innerHTML = state.categories.map(c=>
-      `<div class="chip ${c.id===selectedCategory?'selected':''}" data-cat="${c.id}"><span class="chip-dot" style="background:${resolveColor(c.color)};"></span>${escapeHtml(c.name)}</div>`
-    ).join('');
-    box.querySelectorAll('.chip[data-cat]').forEach(chip=>{
-      chip.addEventListener('click', ()=>{
-        box.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
-        chip.classList.add('selected'); selectedCategory = chip.getAttribute('data-cat');
-        haptic(8);
-      });
-    });
-  }
-  renderCatChips();
+  const catPicker = mountCategoryPicker(overlay, exp.categoryId, false);
+  const datePicker = mountDatePicker(overlay.querySelector('#exp-date'), exp.date);
 
   overlay.querySelector('#manage-cats-link').addEventListener('click', ()=>{
-    openCategoryManager(()=> renderCatChips());
+    openCategoryManager(()=> catPicker.render());
   });
 
   overlay.querySelectorAll('#member-chips .chip').forEach(chip=>{
@@ -2052,10 +2271,12 @@ function openEditExpense(exp){
     if(savingEdit) return;
     const btn = overlay.querySelector('#exp-save');
     const amountVal = parseFloat(overlay.querySelector('#exp-amount').value);
-    const dateVal = overlay.querySelector('#exp-date').value;
+    const dateVal = datePicker.value;
     const noteVal = overlay.querySelector('#exp-note').value.trim();
     const errEl = overlay.querySelector('#exp-error');
+    const selectedCategory = catPicker.selected;
     if(!amountVal || amountVal<=0){ errEl.textContent = 'Укажите сумму больше нуля.'; return; }
+    if(!selectedCategory){ errEl.textContent = 'Выберите категорию.'; return; }
     if(!selectedMember){ errEl.textContent = 'Выберите, кто платил.'; return; }
     if(!dateVal){ errEl.textContent = 'Укажите дату.'; return; }
     if(!navigator.onLine){ errEl.textContent = 'Нет соединения — изменения не сохранятся.'; return; }
@@ -2081,17 +2302,53 @@ function openEditExpense(exp){
 
 // ---------- АНАЛИТИКА ----------
 
+// Аналитика показывает выбранный период: месяц — тот же, что открыт в «Кассе»; неделя листается стрелками
+function analyticsRange(offset){
+  offset = offset || 0;
+  if(state.comparePeriod === 'week') return currentWeekRange(state.analyticsWeekOffset + offset);
+  return shiftedMonthRange(state.selectedYear, state.selectedMonth, offset);
+}
+function shortDate(d){ return pad(d.getDate())+'.'+pad(d.getMonth()+1); }
+function analyticsPeriodTitle(){
+  if(state.comparePeriod === 'week'){
+    const r = analyticsRange(0);
+    return shortDate(r.start)+' – '+shortDate(r.end);
+  }
+  return MONTHS[state.selectedMonth]+' '+state.selectedYear;
+}
+function updateAnalyticsPeriodLabel(){
+  const el = document.getElementById('an-period-label');
+  if(!el) return;
+  el.textContent = analyticsPeriodTitle();
+  el.classList.remove('rolling'); void el.offsetWidth; el.classList.add('rolling');
+}
+function shiftAnalyticsPeriod(delta){
+  if(state.comparePeriod === 'week') state.analyticsWeekOffset += delta;
+  else moveSelectedMonth(delta);
+  state.selectedTrendIndex = null;
+  haptic();
+  updateAnalyticsPeriodLabel();
+  loadAnalyticsData();
+}
+
 function renderAnalyticsShell(){
   return `
     ${renderTopbar()}
-    <div class="period-toggle" id="period-toggle">
-      <button data-period="week" class="${state.comparePeriod==='week'?'active':''}">Неделя</button>
-      <button data-period="month" class="${state.comparePeriod==='month'?'active':''}">Месяц</button>
+    <div class="analytics-controls">
+      <div class="period-toggle" id="period-toggle">
+        <button data-period="week" class="${state.comparePeriod==='week'?'active':''}">Неделя</button>
+        <button data-period="month" class="${state.comparePeriod==='month'?'active':''}">Месяц</button>
+      </div>
+      <div class="wheel analytics-wheel">
+        <button class="wheel-arrow" id="an-prev" aria-label="Предыдущий период">‹</button>
+        <span class="wheel-main rolling" id="an-period-label">${analyticsPeriodTitle()}</span>
+        <button class="wheel-arrow" id="an-next" aria-label="Следующий период">›</button>
+      </div>
     </div>
 
     <div class="analytics-wrap">
     <div class="analytics-section">
-      <h3>Сравнение периодов</h3>
+      <h3>Сравнение с прошлым периодом</h3>
       <div id="compare-content"><div class="loading-note">Считаем…</div></div>
     </div>
 
@@ -2101,14 +2358,9 @@ function renderAnalyticsShell(){
       <div id="trend-breakdown-container"></div>
     </div>
 
-    <div class="analytics-section">
+    <div class="analytics-section wide">
       <h3>Изменения по категориям</h3>
       <div id="category-changes"><div class="loading-note">Считаем…</div></div>
-    </div>
-
-    <div class="analytics-section">
-      <h3>Траты по дням недели</h3>
-      <div class="weekday-chart" id="weekday-chart"><div class="loading-note">Считаем…</div></div>
     </div>
     </div>
 
@@ -2125,48 +2377,39 @@ function attachAnalyticsEvents(){
       state.selectedTrendIndex = null;
       document.querySelectorAll('#period-toggle button').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
+      updateAnalyticsPeriodLabel();
       loadAnalyticsData();
     });
   });
+  document.getElementById('an-prev').addEventListener('click', ()=> shiftAnalyticsPeriod(-1));
+  document.getElementById('an-next').addEventListener('click', ()=> shiftAnalyticsPeriod(1));
+  attachSwipeNavigation();
 }
 
+const TREND_COUNT = 8; // сколько периодов показывать в «Динамике»
+let analyticsToken = 0;
 async function loadAnalyticsData(){
-  const memberId = state.filterMemberId;
-  const period = state.comparePeriod;
+  const token = ++analyticsToken;
+  const isWeek = state.comparePeriod === 'week';
+  const curRange = analyticsRange(0);
+  const prevRange = analyticsRange(-1);
+  const trendStart = analyticsRange(-(TREND_COUNT-1)).start;
 
-  let curRange, prevRange, dayCountCur, dayCountPrev, curLabel, prevLabel;
-  if(period === 'week'){
-    curRange = currentWeekRange(0);
-    prevRange = currentWeekRange(-1);
-    dayCountCur = 7; dayCountPrev = 7;
-    curLabel = 'Эта неделя'; prevLabel = 'прошлой неделей';
-  } else {
-    curRange = currentMonthRangeReal(0);
-    prevRange = currentMonthRangeReal(-1);
-    dayCountCur = curRange.end.getDate(); dayCountPrev = prevRange.end.getDate();
-    curLabel = 'Этот месяц'; prevLabel = 'прошлым месяцем';
-  }
+  // одним запросом берём все 8 периодов, текущий и прошлый вырезаем из них
+  const trendExp = await fetchExpensesRange(toDateStr(trendStart), toDateStr(curRange.end), state.filterMemberId);
+  if(token !== analyticsToken) return;
+  const inRange = (r)=>{ const s = toDateStr(r.start), e = toDateStr(r.end); return trendExp.filter(x=>x.date>=s && x.date<=e); };
 
-  const trendCount = 8;
-  const trendStart = period==='week' ? currentWeekRange(-(trendCount-1)).start : currentMonthRangeReal(-(trendCount-1)).start;
-  const trendEnd = curRange.end;
-
-  const wdEnd = new Date();
-  const wdStart = new Date(); wdStart.setDate(wdEnd.getDate()-83);
-
-  const [curExp, prevExp, trendExp, wdExp] = await Promise.all([
-    fetchExpensesRange(toDateStr(curRange.start), toDateStr(curRange.end), memberId),
-    fetchExpensesRange(toDateStr(prevRange.start), toDateStr(prevRange.end), memberId),
-    fetchExpensesRange(toDateStr(trendStart), toDateStr(trendEnd), memberId),
-    fetchExpensesRange(toDateStr(wdStart), toDateStr(wdEnd), memberId),
-  ]);
-
-  state.analytics = { curExp, prevExp, curRange, prevRange, dayCountCur, dayCountPrev, curLabel, prevLabel, trendExp, wdExp };
+  state.analytics = {
+    curExp: inRange(curRange), prevExp: inRange(prevRange), curRange, prevRange,
+    dayCountCur: elapsedDays(curRange), dayCountPrev: elapsedDays(prevRange),
+    prevLabel: isWeek ? 'за '+shortDate(prevRange.start)+' – '+shortDate(prevRange.end) : 'в '+MONTHS_PREP[prevRange.start.getMonth()],
+    trendExp
+  };
 
   renderComparison();
   renderTrend();
   renderCategoryChanges();
-  renderWeekdayPattern();
 }
 
 function renderComparison(){
@@ -2184,11 +2427,17 @@ function renderComparison(){
     return `<div class="compare-metric">
       <div class="compare-metric-label">${label}</div>
       <div class="compare-metric-value"><span class="count-value" data-value="${curVal}">${fmtMoney(0)}</span>${badgeText?`<span class="change-badge ${change.cls}">${badgeText}</span>`:''}</div>
-      <div class="compare-metric-sub">было ${fmtMoney(prevVal)} · разница ${diffText}</div>
+      <div class="compare-metric-sub">было ${fmtMoney(prevVal)} ${a.prevLabel} · разница ${diffText}</div>
     </div>`;
   }
 
+  const fullDays = daysInRange(a.curRange);
+  const note = a.dayCountCur < fullDays
+    ? `<div class="compare-note">Период ещё идёт: прошло ${a.dayCountCur} из ${fullDays} дн. Средний расход считается по прошедшим дням.</div>`
+    : '';
+
   el.innerHTML = `
+    ${note}
     <div class="compare-card">
       ${row('Общая сумма расходов', curStats.total, prevStats.total, totalChange)}
       ${row('Средний расход в день', curStats.avgPerDay, prevStats.avgPerDay, avgChange)}
@@ -2204,22 +2453,18 @@ function renderTrend(){
   const el = document.getElementById('trend-chart');
   if(!el) return;
   const a = state.analytics;
-  const period = state.comparePeriod;
-  const count = 8;
+  const isWeek = state.comparePeriod === 'week';
   const points = [];
-  for(let i=count-1; i>=0; i--){
-    let range, label;
-    if(period === 'week'){
-      range = currentWeekRange(-i);
-      label = pad(range.start.getDate())+'.'+pad(range.start.getMonth()+1);
-    } else {
-      range = currentMonthRangeReal(-i);
-      label = MONTHS_SHORT[range.start.getMonth()];
-    }
+  for(let i=TREND_COUNT-1; i>=0; i--){
+    const range = analyticsRange(-i);
+    const label = isWeek ? shortDate(range.start) : MONTHS_SHORT[range.start.getMonth()];
+    const title = isWeek
+      ? 'неделю '+shortDate(range.start)+' – '+shortDate(range.end)
+      : MONTHS[range.start.getMonth()]+' '+range.start.getFullYear();
     const startStr = toDateStr(range.start), endStr = toDateStr(range.end);
     const periodExpenses = a.trendExp.filter(e => e.date >= startStr && e.date <= endStr);
     const total = periodExpenses.reduce((s,e)=>s+e.amount,0);
-    points.push({label, total, isCurrent: i===0, periodExpenses});
+    points.push({label, title, total, isCurrent: i===0, periodExpenses});
   }
   state.trendPoints = points;
   const max = Math.max(...points.map(p=>p.total), 1);
@@ -2253,7 +2498,7 @@ function renderTrendBreakdown(){
   const point = state.trendPoints[state.selectedTrendIndex];
   const map = sumByCategoryMap(point.periodExpenses);
   const rows = Object.entries(map).sort((a,b)=>b[1]-a[1]);
-  const periodLabel = point.isCurrent ? 'текущий период' : point.label;
+  const periodLabel = point.title;
 
   if(rows.length===0){
     container.innerHTML = `<div class="trend-breakdown">
@@ -2265,7 +2510,7 @@ function renderTrendBreakdown(){
       <div class="trend-breakdown-title"><span>Разбивка за ${periodLabel}</span><span class="trend-breakdown-close" id="trend-breakdown-close">закрыть</span></div>
       ${rows.map(([id,amt], i)=>{
         const cat = categoryById(id);
-        return `<div class="trend-breakdown-row" style="animation-delay:${(i*0.04).toFixed(2)}s;"><span class="trend-breakdown-name">${cat.name}</span><span class="trend-breakdown-amt">${fmtMoney(amt)}</span></div>`;
+        return `<div class="trend-breakdown-row" style="animation-delay:${(i*0.04).toFixed(2)}s;"><span class="trend-breakdown-name">${escapeHtml(cat.name)}</span><span class="trend-breakdown-amt">${fmtMoney(amt)}</span></div>`;
       }).join('')}
     </div>`;
   }
@@ -2295,34 +2540,12 @@ function renderCategoryChanges(){
     const badgeText = r.change.pct===null ? '—' : `${r.change.sign}${Math.abs(r.change.pct).toFixed(0)}%`;
     const diffText = `${r.change.diff>=0?'+':'−'}${fmtMoney(Math.abs(r.change.diff))}`;
     return `<div class="cat-change-row" style="animation-delay:${(idx*0.04).toFixed(2)}s;">
-      <span class="cat-change-name">${cat.name}</span>
+      <span class="cat-change-name">${escapeHtml(cat.name)}</span>
       <span class="cat-change-nums">
         <span>${fmtMoney(r.cur)}</span>
         <span style="opacity:.5;">${diffText}</span>
         <span class="change-badge ${r.change.cls}">${badgeText}</span>
       </span>
-    </div>`;
-  }).join('');
-}
-
-function renderWeekdayPattern(){
-  const el = document.getElementById('weekday-chart');
-  if(!el) return;
-  const a = state.analytics;
-  const sums = [0,0,0,0,0,0,0];
-  a.wdExp.forEach(e=>{
-    const d = new Date(e.date+'T00:00:00');
-    let idx = d.getDay()-1; if(idx<0) idx = 6;
-    sums[idx] += e.amount;
-  });
-  const max = Math.max(...sums, 1);
-  const peakVal = Math.max(...sums);
-  el.innerHTML = sums.map((v,i)=>{
-    const h = v>0 ? Math.max(Math.round((v/max)*100),4) : 2;
-    return `<div class="weekday-bar-col ${v===peakVal && v>0 ? 'peak' : ''}">
-      <div class="weekday-bar" style="height:${h}%; animation-delay:${(i*0.04).toFixed(2)}s;" title="${fmtMoney(v)}"></div>
-      <div class="weekday-bar-label">${WEEKDAYS_SHORT[i]}</div>
-      <div class="weekday-bar-amt">${v>0 ? Math.round(v).toLocaleString('ru-RU') : ''}</div>
     </div>`;
   }).join('');
 }
@@ -2333,7 +2556,7 @@ function openDeleteConfirm(exp){
   overlay.innerHTML = `
     <div class="modal" style="max-width:340px;">
       <h2>Удалить трату?</h2>
-      <p style="font-size:14px;color:var(--ink-soft);">${cat.name} · ${fmtMoney(exp.amount)} · ${m?m.name:'—'}${exp.note? ' · '+escapeHtml(exp.note):''}</p>
+      <p class="modal-text">${escapeHtml(cat.name)} · ${fmtMoney(exp.amount)} · ${m?escapeHtml(m.name):'—'}${exp.note? ' · '+escapeHtml(exp.note):''}</p>
       <div class="modal-actions">
         <button class="btn btn-secondary" id="del-cancel">Отмена</button>
         <button class="btn btn-danger" id="del-confirm">Удалить</button>
@@ -2346,8 +2569,9 @@ function openDeleteConfirm(exp){
     const btn = overlay.querySelector('#del-confirm');
     setBtnLoading(btn, true);
     const snapshot = Object.assign({}, exp); // копия для возможной отмены
-    await deleteExpenseRow(exp.id);
+    const ok = await deleteExpenseRow(exp.id);
     setBtnLoading(btn, false);
+    if(!ok) return;
     overlay.remove();
     haptic();
     refreshData();
@@ -2368,7 +2592,11 @@ async function init(){
   updateOnlineStatus();
   renderApp();
   sb.channel('expenses-changes')
-    .on('postgres_changes', {event:'*', schema:'public', table:'expenses'}, ()=>{ if(state.myMemberId) refreshData(); })
+    .on('postgres_changes', {event:'*', schema:'public', table:'expenses'}, ()=>{
+      if(!state.myMemberId) return;
+      if(state.currentPage === 'analytics') loadAnalyticsData();
+      else refreshData();
+    })
     .subscribe();
 }
 init();
